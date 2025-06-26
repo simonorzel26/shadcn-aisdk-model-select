@@ -1,6 +1,7 @@
-export { ModelSelector } from './ModelSelector';
-export { ApiKeySettings } from './ApiKeySettings';
-export { SimpleGenerator } from './SimpleGenerator';
+export * from './ApiKeySettings';
+export * from './ModelSelector';
+export * from './SimpleGenerator';
+export * from './ModelDiscoveryView';
 export * from '@/types/model-selector';
 export { useApiKeys } from '@/hooks/useApiKeys';
 export { useModelRegistry } from '@/hooks/useModelRegistry';

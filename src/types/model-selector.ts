@@ -1,9 +1,5 @@
 export interface ProviderApiKeys {
-  openai?: string;
-  anthropic?: string;
-  google?: string;
-  mistral?: string;
-  cohere?: string;
+  [key: string]: string | undefined;
 }
 
 export interface ProviderConfig {

@@ -1,9 +1,6 @@
 'use client';
 
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,91 +8,117 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { PROVIDER_CONFIGS } from '@/config/providers';
 import { useApiKeys } from '@/hooks/useApiKeys';
-import { ApiKeySettingsProps, ProviderApiKeys } from '@/types/model-selector';
+import { useProviderSettings } from '@/hooks/useProviderSettings';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { ProviderApiKeys } from '@/types/model-selector';
 
-const apiKeySchema = z.object({
-  openai: z.string().optional(),
-  anthropic: z.string().optional(),
-  google: z.string().optional(),
-  mistral: z.string().optional(),
-  cohere: z.string().optional(),
-});
+interface ApiKeySettingsProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  providers: string[];
+}
 
-export function ApiKeySettings({ open, onOpenChange }: ApiKeySettingsProps) {
-  const { apiKeys, updateApiKeys } = useApiKeys();
+export function ApiKeySettings({
+  open,
+  onOpenChange,
+  providers,
+}: ApiKeySettingsProps) {
+  const { apiKeys, updateApiKeys, isLoaded: apiKeysLoaded } = useApiKeys();
+  const {
+    providerVisibility,
+    setAllProviderVisibility,
+    isLoaded: visibilityLoaded,
+  } = useProviderSettings();
 
-  const form = useForm<ProviderApiKeys>({
-    resolver: zodResolver(apiKeySchema),
-    defaultValues: apiKeys,
-  });
+  const [localApiKeys, setLocalApiKeys] = useState<ProviderApiKeys>({});
+  const [localVisibility, setLocalVisibility] = useState<
+    Record<string, boolean>
+  >({});
 
-  React.useEffect(() => {
-    form.reset(apiKeys);
-  }, [apiKeys, form]);
+  useEffect(() => {
+    if (open && apiKeysLoaded && visibilityLoaded) {
+      const initialVisibility = { ...providerVisibility };
+      providers.forEach(provider => {
+        if (initialVisibility[provider] === undefined) {
+          initialVisibility[provider] = !!apiKeys[provider];
+        }
+      });
+      setLocalApiKeys(apiKeys);
+      setLocalVisibility(initialVisibility);
+    }
+  }, [
+    open,
+    apiKeys,
+    providerVisibility,
+    providers,
+    apiKeysLoaded,
+    visibilityLoaded,
+  ]);
 
-  const onSubmit = (values: ProviderApiKeys) => {
-    updateApiKeys(values);
+  const handleSave = () => {
+    updateApiKeys(localApiKeys);
+    setAllProviderVisibility(localVisibility);
     onOpenChange(false);
   };
 
+  const handleApiKeyChange = (provider: string, value: string) => {
+    setLocalApiKeys(prev => ({ ...prev, [provider]: value }));
+    setLocalVisibility(prev => ({ ...prev, [provider]: !!value }));
+  };
+
+  const handleVisibilityToggle = (provider: string, checked: boolean) => {
+    setLocalVisibility(prev => ({ ...prev, [provider]: checked }));
+  };
+
+  if (!apiKeysLoaded || !visibilityLoaded) {
+    return null;
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>API Key Settings</DialogTitle>
+          <DialogTitle>API Key & Provider Settings</DialogTitle>
           <DialogDescription>
-            Configure your API keys for different LLM providers. Only models from providers with configured keys will be available.
+            Manage your API keys and model visibility for each provider.
           </DialogDescription>
         </DialogHeader>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {PROVIDER_CONFIGS.map((provider) => (
-              <FormField
-                key={provider.key}
-                control={form.control}
-                name={provider.key}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{provider.label}</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder={`Enter your ${provider.name} API key`}
-                        {...field}
-                        value={field.value || ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
-
-            <div className="flex justify-end space-x-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="submit">Save API Keys</Button>
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto p-1">
+          {providers.map(provider => (
+            <div key={provider} className="space-y-3 p-3 border rounded-md">
+              <h3 className="font-semibold capitalize">{provider}</h3>
+              <div className="space-y-2">
+                <Label htmlFor={`${provider}-key`}>API Key</Label>
+                <Input
+                  id={`${provider}-key`}
+                  type="password"
+                  value={localApiKeys[provider] || ''}
+                  onChange={e => handleApiKeyChange(provider, e.target.value)}
+                  placeholder={`Enter ${provider} API Key`}
+                />
+              </div>
+              <div className="flex items-center space-x-2 pt-2">
+                <Switch
+                  id={`${provider}-visible`}
+                  checked={!!localVisibility[provider]}
+                  onCheckedChange={checked =>
+                    handleVisibilityToggle(provider, checked)
+                  }
+                />
+                <Label htmlFor={`${provider}-visible`}>
+                  Show {provider} models in selector
+                </Label>
+              </div>
             </div>
-          </form>
-        </Form>
+          ))}
+        </div>
+        <Button onClick={handleSave} className="mt-4 w-full">
+          Save and Close
+        </Button>
       </DialogContent>
     </Dialog>
   );
