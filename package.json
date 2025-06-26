@@ -1,0 +1,97 @@
+{
+  "name": "shadcn-aisdk-model-select",
+  "version": "0.1.0",
+  "description": "A reusable React component for selecting LLM models with API key management, built with shadcn/ui and Vercel AI SDK",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./components": {
+      "import": "./src/components/index.ts",
+      "require": "./src/components/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src/components",
+    "src/types",
+    "src/hooks",
+    "src/config"
+  ],
+  "keywords": [
+    "react",
+    "nextjs",
+    "shadcn",
+    "ai",
+    "llm",
+    "model-selector",
+    "vercel-ai-sdk",
+    "openai",
+    "anthropic",
+    "google",
+    "mistral",
+    "cohere"
+  ],
+  "author": "Simon Orzel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonorzel26/shadcn-aisdk-model-select.git"
+  },
+  "bugs": {
+    "url": "https://github.com/simonorzel26/shadcn-aisdk-model-select/issues"
+  },
+  "homepage": "https://github.com/simonorzel26/shadcn-aisdk-model-select#readme",
+  "private": false,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "build:lib": "tsc --build --verbose",
+    "check": "bun -v"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^1.0.5",
+    "@ai-sdk/cohere": "^1.0.4",
+    "@ai-sdk/google": "^1.0.10",
+    "@ai-sdk/mistral": "^1.0.4",
+    "@ai-sdk/openai": "^1.0.6",
+    "@hookform/resolvers": "^3.10.0",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-slot": "^1.1.0",
+    "ai": "^4.0.18",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.454.0",
+    "next": "15.1.3",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-hook-form": "^7.54.2",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@types/node": "^20.17.10",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "15.1.3",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}
