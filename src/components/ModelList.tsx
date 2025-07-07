@@ -39,7 +39,7 @@ export function ModelList({ models }: { models: AiModel[] }) {
               value={model.value}
               className="pl-6"
             >
-              {model.model}
+              <span className="text-xs">{model.model}</span>
             </SelectItem>
           ))}
         </div>

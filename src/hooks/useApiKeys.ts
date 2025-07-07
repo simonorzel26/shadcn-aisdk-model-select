@@ -23,7 +23,7 @@ export function useApiKeys(providers: string[]) {
     setApiKeys(prevKeys => {
       const newKeys = { ...prevKeys, [provider]: key };
       try {
-        localStorage.setItem(API_KEYS_STORAGE_KEY, JSON.stringify(newKeys));
+    localStorage.setItem(API_KEYS_STORAGE_KEY, JSON.stringify(newKeys));
       } catch (error) {
         console.error('Failed to save API key to localStorage', error);
       }

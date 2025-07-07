@@ -4,14 +4,13 @@ import { useState, useMemo, useEffect } from 'react';
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Settings } from 'lucide-react';
 import { ModelSettingsDialog } from './ModelSettingsDialog';
-import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
+import { useModelSelection } from '@/contexts/ModelSelectionContext';
 import { AiModel, ModelSelectDropdownSettings } from '@/types/model';
 import { ModelList } from './ModelList';
 
@@ -35,7 +34,7 @@ function ModelSelectWithSettings({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedModels, state.isLoaded]);
+  }, [selectedModels, state.isLoaded, selectedModel]);
 
   const isLoading = !state.isLoaded;
 
@@ -44,7 +43,7 @@ function ModelSelectWithSettings({
 
   return (
     <>
-      <Select onValueChange={setSelectedModel} value={selectedModel} disabled={isLoading}>
+      <Select onValueChange={setSelectedModel} value={selectedModel || ''} disabled={isLoading}>
         <SelectTrigger className="flex-grow">
           <SelectValue asChild>
             <span>{isLoading ? 'Loading...' : selectedModelLabel}</span>
@@ -95,16 +94,15 @@ export function ModelSelectDropdown({
   className,
 }: Omit<ModelSelectDropdownProps, 'onModelChange' | 'selectedModel'>) {
   const hasSettings = settings !== false;
-  const { selectedModel, setSelectedModel } = useModelSelection();
+  const { selectedModel, setSelectedModel, allModels } = useModelSelection();
 
   if (!hasSettings) {
-    // Render a simplified version without settings or context
     const selectedModelLabel =
-      models.find(m => m.value === selectedModel)?.model || placeholder;
+      allModels.find(m => m.value === selectedModel)?.model || placeholder;
 
     return (
       <div className={`flex items-center gap-4 ${className || ''}`}>
-        <Select onValueChange={setSelectedModel} value={selectedModel}>
+        <Select onValueChange={setSelectedModel} value={selectedModel || ''}>
           <SelectTrigger className="flex-grow">
             <SelectValue asChild>
               <span>{selectedModelLabel}</span>

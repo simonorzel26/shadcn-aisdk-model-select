@@ -6,7 +6,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { AiModel } from '@/types/model';
-import { Brain, BrainCircuit } from 'lucide-react';
+import { Brain } from 'lucide-react';
 import { ModelList } from './ModelList';
 import { useModelSelection } from '@/contexts/ModelSelectionContext';
 

@@ -29,6 +29,7 @@ interface ModelSelectionContextType {
   state: ModelSelectionState;
   selectedModels: AiModel[];
   configurableModels: AiModel[];
+  allModels: AiModel[];
   toggleModel: (modelId: string) => void;
   selectAll: () => void;
   deselectAll: () => void;
@@ -207,6 +208,7 @@ export function ModelSelectionProvider({
     state,
     selectedModels,
     configurableModels,
+    allModels: configurableModels,
     toggleModel,
     selectAll,
     deselectAll,
