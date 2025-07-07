@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ProviderApiKeys } from '@/types/model';
 
 const API_KEYS_STORAGE_KEY = 'llm-model-selector-api-keys';
 
-export function useApiKeys() {
+export function useApiKeys(providers: string[]) {
   const [apiKeys, setApiKeys] = useState<ProviderApiKeys>({});
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -19,10 +19,17 @@ export function useApiKeys() {
     setIsLoaded(true);
   }, []);
 
-  const updateApiKeys = (newKeys: ProviderApiKeys) => {
-    setApiKeys(newKeys);
-    localStorage.setItem(API_KEYS_STORAGE_KEY, JSON.stringify(newKeys));
-  };
+  const setApiKey = useCallback((provider: string, key: string) => {
+    setApiKeys(prevKeys => {
+      const newKeys = { ...prevKeys, [provider]: key };
+      try {
+        localStorage.setItem(API_KEYS_STORAGE_KEY, JSON.stringify(newKeys));
+      } catch (error) {
+        console.error('Failed to save API key to localStorage', error);
+      }
+      return newKeys;
+    });
+  }, []);
 
   const getAvailableProviders = () => {
     return Object.entries(apiKeys)
@@ -32,7 +39,7 @@ export function useApiKeys() {
 
   return {
     apiKeys,
-    updateApiKeys,
+    setApiKey,
     getAvailableProviders,
     isLoaded
   };

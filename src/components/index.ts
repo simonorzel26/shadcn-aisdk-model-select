@@ -1,8 +1,6 @@
-export * from './ApiKeySettings';
-export * from './ModelSelector';
+export * from './ModelSettingsDialog';
 export * from './ModelSelectDropdown';
-export * from './SimpleGenerator';
-export * from '@/types/model';
+export * from './ModelSelectionTab';
+export * from './TinyModelSelector';
 export { useApiKeys } from '@/hooks/useApiKeys';
-export { useModels } from '@/hooks/useModels';
-export { useProviderSettings } from '@/hooks/useProviderSettings';
+export { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';

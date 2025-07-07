@@ -4,19 +4,27 @@ A modern, professional AI model selector built with Next.js, TypeScript, and Tai
 
 ## Main Concept
 
-The **ModelSelectDropdown** component is the core of this project - an isolated, self-contained component that combines:
-- A beautiful select dropdown with provider grouping
-- Integrated settings button for API key management
+The **ModelSelectDropdown** component is the core of this project - an isolated, self-contained component following **Single Responsibility Principle**:
+
+### 🎯 **Core Responsibilities**
+- Render a beautiful select dropdown with provider grouping
+- Accept models array and output selected model value
+- **Optional** API key management via `settings` prop
 - Clean, professional UI with shadcn/ui components
+
+### ⚙️ **Settings Mode**
+- `settings={false}` - Pure dropdown, no localStorage, no settings button
+- `settings={true}` - Includes settings button + API key management
+- `settings={{...}}` - Custom configuration object
 
 ## Features
 
-- **Isolated Component**: Self-contained dropdown with settings - perfect for embedding in any project
-- **Comprehensive Model Support**: Integrates with `@simonorzel26/ai-models` package providing access to hundreds of AI models
-- **Provider Organization**: Models are organized by provider with clean grouping and filtering
-- **API Key Management**: Secure API key storage and management with visibility controls
-- **Professional UI**: Built with shadcn/ui components for a clean, modern interface
-- **Type Safety**: Full TypeScript support with proper type definitions
+- **🔒 Isolated Component**: Self-contained with zero external dependencies when `settings={false}`
+- **📦 Single Responsibility**: Just model selection - settings are optional
+- **🎨 Provider Organization**: Models grouped by provider with clean visual hierarchy
+- **⚡ SOLID Principles**: Clean, maintainable, extensible architecture
+- **🔧 Comprehensive Model Support**: Works with `@simonorzel26/ai-models` package
+- **🎯 Type Safety**: Full TypeScript support with proper type definitions
 
 ## Installation
 
@@ -24,28 +32,65 @@ The **ModelSelectDropdown** component is the core of this project - an isolated,
 bun install
 ```
 
-## Usage
+## Usage Examples
 
-### Main Component - ModelSelectDropdown
-
-The primary component that combines the dropdown selector with settings:
-
+### 1. Basic Usage (No Settings)
 ```tsx
 import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
 import { aiModels } from '@/lib/models';
 
-export default function MyComponent() {
-  const [selectedModel, setSelectedModel] = useState('');
+export default function BasicExample() {
+  const [selected, setSelected] = useState('');
 
   return (
     <ModelSelectDropdown
       models={aiModels}
-      selectedModel={selectedModel}
-      onModelChange={setSelectedModel}
-      className="w-full max-w-md"
+      selectedModel={selected}
+      onModelChange={setSelected}
+      placeholder="Choose any model..."
     />
   );
 }
+```
+
+### 2. With Settings (API Key Management)
+```tsx
+<ModelSelectDropdown
+  models={aiModels}
+  selectedModel={selected}
+  onModelChange={setSelected}
+  settings={true}
+  placeholder="Select model with settings..."
+/>
+```
+
+### 3. OpenAI & Claude Chat Models Only
+```tsx
+// Filter models before passing
+const openaiClaudeModels = aiModels.filter(model =>
+  (model.value.includes('openai') || model.value.includes('anthropic')) &&
+  model.category === 'chat'
+);
+
+<ModelSelectDropdown
+  models={openaiClaudeModels}
+  selectedModel={selected}
+  onModelChange={setSelected}
+  placeholder="OpenAI or Claude models..."
+/>
+```
+
+### 4. Chat Models Only (With Settings)
+```tsx
+<ModelSelectDropdown
+  models={aiModels}
+  selectedModel={selected}
+  onModelChange={setSelected}
+  settings={{
+    enabledCategories: ['chat']
+  }}
+  placeholder="Chat models only..."
+/>
 ```
 
 ### Configuration

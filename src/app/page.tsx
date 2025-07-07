@@ -1,79 +1,62 @@
-import { SimpleGenerator } from '@/components/SimpleGenerator';
-import { aiModels, availableProviders } from '@/lib/models';
-import { getProviderDisplayName } from '@/lib/config';
+'use client';
+
+import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
+import { getFilteredModels } from '@/lib/models';
+import { FilteringExamples } from './FilteringExamples';
+import { TinyModelSelector } from '@/components/TinyModelSelector';
+import { useModelSelection, ModelSelectionProvider } from '@/contexts/ModelSelectionContext';
+
+function Generator() {
+  const { selectedModel } = useModelSelection();
+  const models = getFilteredModels({
+    providers: ['openai', 'anthropic'],
+    categories: ['chat'],
+  });
+  return (
+    <div className="bg-card border rounded-lg p-6 space-y-4 relative">
+      <ModelSelectDropdown
+        models={models}
+        settings={true}
+        placeholder="Select an AI model..."
+      />
+
+      {selectedModel && (
+        <div className="p-4 border rounded-md bg-muted">
+          <p className="font-semibold">Selected Model:</p>
+          <p className="text-sm text-muted-foreground break-all">{selectedModel}</p>
+        </div>
+      )}
+      <div className="flex justify-end">
+        <TinyModelSelector models={models} />
+      </div>
+    </div>
+  );
+}
+
 
 export default function Page() {
-  const modelsByCategory = aiModels.reduce((acc, model) => {
-    if (!acc[model.category]) {
-      acc[model.category] = [];
-    }
-    acc[model.category].push(model);
-    return acc;
-  }, {} as Record<string, typeof aiModels>);
+  const models = getFilteredModels({
+    providers: ['openai', 'anthropic'],
+    categories: ['chat'],
+  });
+  const initialModel = models[0]?.value || '';
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-8 lg:p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <h1 className="text-2xl font-bold">AI Model Selector</h1>
-
-      </div>
-
-
-      <div className="w-full max-w-5xl mt-8">
-        <SimpleGenerator initialModels={aiModels} />
-      </div>
-      <p className=" mt-12 text-sm text-muted-foreground">
-          {aiModels.length} models available from {availableProviders.length} providers
+    <main className="flex min-h-screen flex-col items-center justify-start p-24">
+      <div className="w-full max-w-lg">
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          AI Model Selector
+        </h1>
+        <p className="text-muted-foreground mb-8 text-center">
+          Select a model from the dropdown. Use the settings icon to customize the list.
         </p>
-      <div className="w-full max-w-5xl mt-2 p-4 bg-muted/50 rounded-lg border">
-        <p className="text-sm text-center text-muted-foreground">
-          Model definitions powered by{' '}
-          <a
-            href="https://www.npmjs.com/package/@simonorzel26/ai-models"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold text-primary hover:underline"
-          >
-            @simonorzel26/ai-models
-          </a>
-          {' '}• AI SDK compatible model registry
-        </p>
-      </div>
-      <div className="w-full max-w-5xl mt-8">
-        <h2 className="text-xl font-semibold mb-4">Model Categories</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {Object.entries(modelsByCategory).map(([category, models]) => (
-            <div key={category} className="border rounded-lg p-4">
-              <h3 className="font-semibold mb-2 capitalize">{category}</h3>
-              <p className="text-sm text-muted-foreground">
-                {models.length} models available
-              </p>
-              <div className="mt-2 text-xs text-muted-foreground">
-                From {[...new Set(models.map(m => m.provider))].length} providers
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="w-full max-w-5xl mt-8">
-        <h2 className="text-xl font-semibold mb-4">Available Providers</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {availableProviders.map(provider => {
-            const providerModels = aiModels.filter(model => model.provider === provider);
-            return (
-              <div key={provider} className="border rounded-lg p-4">
-                <h3 className="font-semibold mb-2">{getProviderDisplayName(provider)}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {providerModels.length} models available
-                </p>
-                <div className="mt-2 text-xs text-muted-foreground">
-                  Categories: {[...new Set(providerModels.map(m => m.category))].join(', ')}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <ModelSelectionProvider
+          configurableModels={models}
+          initialModel={initialModel}
+        >
+          <Generator />
+        </ModelSelectionProvider>
+        <FilteringExamples />
       </div>
     </main>
   );

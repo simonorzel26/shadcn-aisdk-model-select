@@ -10,81 +10,54 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Settings } from 'lucide-react';
-import { ApiKeySettings } from './ApiKeySettings';
-import { AiModel } from '@/types/model';
-import { useProviderSettings } from '@/hooks/useProviderSettings';
-import { getProviderDisplayName, getModelDisplayName } from '@/lib/config';
+import { ModelSettingsDialog } from './ModelSettingsDialog';
+import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
+import { AiModel, ModelSelectDropdownSettings } from '@/types/model';
+import { ModelList } from './ModelList';
 
-export interface ModelSelectDropdownProps {
-  models: AiModel[];
-  selectedModel: string;
-  onModelChange: (model: string) => void;
-  className?: string;
-}
-
-export function ModelSelectDropdown({
+function ModelSelectWithSettings({
   models,
-  selectedModel,
-  onModelChange,
-  className,
-}: ModelSelectDropdownProps) {
+  placeholder,
+  settings,
+}: Omit<ModelSelectDropdownProps, 'onModelChange' | 'selectedModel'>) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { state, selectedModels, selectedModel, setSelectedModel } = useModelSelection();
 
   const allProviders = useMemo(() => {
     return [...new Set(models.map(m => m.provider))];
   }, [models]);
 
-  const { providerVisibility, isLoaded } = useProviderSettings();
-
-  const visibleModels = useMemo(() => {
-    if (!isLoaded) return [];
-    return models.filter(model => providerVisibility[model.provider] !== false);
-  }, [models, providerVisibility, isLoaded]);
-
   useEffect(() => {
-    const isSelectedModelVisible = visibleModels.some(
-      m => m.value === selectedModel,
-    );
-    if (selectedModel && !isSelectedModelVisible) {
-      onModelChange('');
+    if (state.isLoaded) {
+      const isSelectedModelInList = selectedModels.some(m => m.value === selectedModel);
+      if (!isSelectedModelInList && selectedModels.length > 0) {
+        setSelectedModel(selectedModels[0].value);
+      }
     }
-  }, [selectedModel, visibleModels, onModelChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedModels, state.isLoaded]);
 
-  const groupedModels = useMemo(() => {
-    return visibleModels.reduce(
-      (acc, model) => {
-        if (!acc[model.provider]) {
-          acc[model.provider] = [];
-        }
-        acc[model.provider].push(model);
-        return acc;
-      },
-      {} as Record<string, AiModel[]>,
-    );
-  }, [visibleModels]);
+  const isLoading = !state.isLoaded;
+
+  const selectedModelLabel =
+    models.find(m => m.value === selectedModel)?.model || placeholder;
 
   return (
-    <div className={`flex items-center gap-4 ${className || ''}`}>
-      <Select onValueChange={onModelChange} value={selectedModel}>
+    <>
+      <Select onValueChange={setSelectedModel} value={selectedModel} disabled={isLoading}>
         <SelectTrigger className="flex-grow">
-          <SelectValue placeholder="Select a model..." />
+          <SelectValue asChild>
+            <span>{isLoading ? 'Loading...' : selectedModelLabel}</span>
+          </SelectValue>
         </SelectTrigger>
         <SelectContent className="max-h-96">
-          {Object.entries(groupedModels).map(([provider, providerModels]) => (
-            <div key={provider}>
-              <div className="px-2 py-1.5 text-sm font-semibold">
-                {getProviderDisplayName(provider)}
-              </div>
-              {providerModels.map(model => (
-                <SelectItem
-                  key={model.value}
-                  value={model.value}
-                >
-                  {getModelDisplayName(model.model)}
-                </SelectItem>
-              ))}
+          {isLoading ? (
+            <div className="px-2 py-4 text-center text-sm text-muted-foreground">
+              Loading...
             </div>
-          ))}
+          ) : (
+            <ModelList models={selectedModels} />
+          )}
         </SelectContent>
       </Select>
       <Button
@@ -94,12 +67,64 @@ export function ModelSelectDropdown({
         className="h-10 w-10 shrink-0"
       >
         <Settings className="h-4 w-4" />
-        <span className="sr-only">API Key Settings</span>
+        <span className="sr-only">Model Settings</span>
       </Button>
-      <ApiKeySettings
+      <ModelSettingsDialog
         open={isSettingsOpen}
         onOpenChange={setIsSettingsOpen}
         providers={allProviders}
+        showApiKeys={typeof settings === 'object' ? settings.showApiKeys : true}
+      />
+    </>
+  );
+}
+
+export interface ModelSelectDropdownProps {
+  models: AiModel[];
+  selectedModel?: string;
+  onModelChange?: (model: string) => void;
+  settings?: boolean | ModelSelectDropdownSettings;
+  placeholder?: string;
+  className?: string;
+}
+
+export function ModelSelectDropdown({
+  models,
+  settings = false,
+  placeholder = 'Select a model...',
+  className,
+}: Omit<ModelSelectDropdownProps, 'onModelChange' | 'selectedModel'>) {
+  const hasSettings = settings !== false;
+  const { selectedModel, setSelectedModel } = useModelSelection();
+
+  if (!hasSettings) {
+    // Render a simplified version without settings or context
+    const selectedModelLabel =
+      models.find(m => m.value === selectedModel)?.model || placeholder;
+
+    return (
+      <div className={`flex items-center gap-4 ${className || ''}`}>
+        <Select onValueChange={setSelectedModel} value={selectedModel}>
+          <SelectTrigger className="flex-grow">
+            <SelectValue asChild>
+              <span>{selectedModelLabel}</span>
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent className="max-h-96">
+            <ModelList models={models} />
+          </SelectContent>
+        </Select>
+      </div>
+    );
+  }
+
+  return (
+    <div className={`flex items-center gap-4 ${className || ''}`}>
+      <ModelSelectWithSettings
+        models={models}
+        placeholder={placeholder}
+        className={className}
+        settings={settings}
       />
     </div>
   );
