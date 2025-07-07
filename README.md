@@ -1,211 +1,164 @@
-# shadcn-aisdk-model-select
+# AI Model Selector
 
-A reusable React component for selecting LLM models with API key management, built with shadcn/ui and Vercel AI SDK.
+A modern, professional AI model selector built with Next.js, TypeScript, and Tailwind CSS. This project provides a clean, isolated dropdown component for selecting AI models from various providers.
+
+## Main Concept
+
+The **ModelSelectDropdown** component is the core of this project - an isolated, self-contained component that combines:
+- A beautiful select dropdown with provider grouping
+- Integrated settings button for API key management
+- Clean, professional UI with shadcn/ui components
 
 ## Features
 
-- 🎯 **Model Selection**: Dropdown to select from available LLM models
-- 🔑 **API Key Management**: Settings dialog to configure API keys for different providers
-- 💾 **Persistent Storage**: API keys stored securely in localStorage
-- 🎨 **Beautiful UI**: Built with shadcn/ui components and Tailwind CSS
-- 🔧 **TypeScript**: Full TypeScript support with proper type definitions
-- 📦 **AI SDK Integration**: Uses Vercel AI SDK provider registry for dynamic model discovery
-- ✅ **Model Validation**: Real-time validation with visual indicators and error handling
-- 🌐 **Multiple Providers**: Support for OpenAI, Anthropic, Google, Mistral, and Cohere
-
-## Supported Providers
-
-- **OpenAI**: GPT-4o, GPT-4o Mini, GPT-4 Turbo, GPT-3.5 Turbo
-- **Anthropic**: Claude 3.5 Sonnet, Claude 3.5 Haiku, Claude 3 Opus
-- **Google**: Gemini 1.5 Pro, Gemini 1.5 Flash, Gemini Pro
-- **Mistral**: Mistral Large, Mistral Small, Mistral Nemo
-- **Cohere**: Command R+, Command R, Command
+- **Isolated Component**: Self-contained dropdown with settings - perfect for embedding in any project
+- **Comprehensive Model Support**: Integrates with `@simonorzel26/ai-models` package providing access to hundreds of AI models
+- **Provider Organization**: Models are organized by provider with clean grouping and filtering
+- **API Key Management**: Secure API key storage and management with visibility controls
+- **Professional UI**: Built with shadcn/ui components for a clean, modern interface
+- **Type Safety**: Full TypeScript support with proper type definitions
 
 ## Installation
 
 ```bash
-npm install shadcn-aisdk-model-select
+bun install
 ```
 
 ## Usage
 
-### Basic Usage
+### Main Component - ModelSelectDropdown
+
+The primary component that combines the dropdown selector with settings:
 
 ```tsx
-import { ModelSelector } from 'shadcn-aisdk-model-select';
+import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
+import { aiModels } from '@/lib/models';
 
-function App() {
+export default function MyComponent() {
   const [selectedModel, setSelectedModel] = useState('');
 
   return (
-    <ModelSelector
-      value={selectedModel}
-      onValueChange={setSelectedModel}
+    <ModelSelectDropdown
+      models={aiModels}
+      selectedModel={selectedModel}
+      onModelChange={setSelectedModel}
+      className="w-full max-w-md"
     />
   );
 }
 ```
 
-### With Custom Styling
+### Configuration
+
+You can configure which providers and categories are enabled by default:
 
 ```tsx
-import { ModelSelector } from 'shadcn-aisdk-model-select';
+import { createModelSelectorConfig } from '@/lib/config';
 
-function App() {
-  const [selectedModel, setSelectedModel] = useState('');
+const config = createModelSelectorConfig({
+  enabledProviders: ['@langdb/vercel-provider', 'sarvam-ai-provider'],
+  enabledCategories: ['chat', 'image']
+});
+```
 
-  return (
-    <ModelSelector
-      value={selectedModel}
-      onValueChange={setSelectedModel}
-      className="my-custom-class"
-    />
-  );
+### Available Model Categories
+
+- **chat**: Conversational AI models
+- **image**: Image generation models
+- **embedding**: Text embedding models
+- **transcription**: Audio transcription models
+
+### Provider Management
+
+Users can manage API keys and provider visibility through the settings interface:
+
+- Store API keys securely in localStorage
+- Toggle provider visibility
+- Automatically show/hide providers based on API key availability
+
+## Development
+
+```bash
+# Start development server
+bun run dev
+
+# Build for production
+bun run build
+
+# Run linting
+bun run lint
+```
+
+## Architecture
+
+### Key Components
+
+- **ModelSelectDropdown**: 🎯 **Main component** - Isolated dropdown with integrated settings button
+- **ModelSelector**: Legacy dropdown component (still available)
+- **ApiKeySettings**: Dialog for managing API keys and provider settings
+- **SimpleGenerator**: Example component showing model usage
+- **useModels**: Hook for filtering and organizing models
+- **useProviderSettings**: Hook for managing provider visibility
+- **useApiKeys**: Hook for API key management
+
+### Type System
+
+```typescript
+interface AiModel {
+  provider: string;
+  model: string;
+  category: 'chat' | 'image' | 'embedding' | 'transcription';
+  value: string;
+}
+
+interface ModelSelectorConfig {
+  enabledProviders?: string[];
+  enabledCategories?: ('chat' | 'image' | 'embedding' | 'transcription')[];
 }
 ```
 
-### Using the Hook Directly
+## Customization
 
-```tsx
-import { useApiKeys, useModelRegistry } from 'shadcn-aisdk-model-select';
+### Default Configuration
 
-function MyComponent() {
-  const { apiKeys, updateApiKeys, getAvailableProviders, isLoaded } = useApiKeys();
-  const { registry, getModelFromId } = useModelRegistry();
+Edit `src/lib/config.ts` to change default settings:
 
-  // Your component logic here
-}
+```typescript
+export const defaultModelSelectorConfig: ModelSelectorConfig = {
+  enabledCategories: ['chat'],
+  enabledProviders: [
+    '@langdb/vercel-provider',
+    'sarvam-ai-provider',
+  ],
+};
 ```
 
-### Using with AI SDK
+### Provider Display Names
 
-```tsx
-import { generateText } from 'ai';
-import { useModelValidation } from 'shadcn-aisdk-model-select';
+Customize how provider names are displayed:
 
-function MyAIComponent() {
-  const { validateModel } = useModelValidation();
-
-  const handleGenerate = async (prompt: string, modelId: string) => {
-    // Validate model before use
-    const validation = await validateModel(modelId);
-
-    if (!validation.isValid) {
-      throw new Error(validation.error);
-    }
-
-    const { text } = await generateText({
-      model: validation.model,
-      prompt,
-    });
-
-    return text;
-  };
-}
-```
-
-### Model Validation
-
-```tsx
-import { useModelValidation } from 'shadcn-aisdk-model-select';
-
-function MyComponent() {
-  const { quickValidateModel, validateModel } = useModelValidation();
-
-  // Quick validation (synchronous, checks registry only)
-  const quickResult = quickValidateModel('openai:gpt-4o');
-
-  // Full validation (asynchronous, tests actual API)
-  const fullValidation = await validateModel('openai:gpt-4o');
-
-  if (fullValidation.isValid) {
-    // Model is ready to use
-    console.log('Model validated successfully');
-  } else {
-    // Handle validation errors
-    console.error(fullValidation.error);
-    switch (fullValidation.errorType) {
-      case 'NO_REGISTRY':
-        // No API keys configured
-        break;
-      case 'INVALID_MODEL_ID':
-        // Invalid model format
-        break;
-      case 'PROVIDER_ERROR':
-        // Provider not available
-        break;
-      case 'API_KEY_ERROR':
-        // API key issues
-        break;
-    }
+```typescript
+export function getProviderDisplayName(provider: string): string {
+  switch (provider) {
+    case '@langdb/vercel-provider':
+      return 'Vercel AI';
+    case 'sarvam-ai-provider':
+      return 'Sarvam AI';
+    default:
+      return provider.replace(/-provider$/, '').replace(/[@_-]/g, ' ');
   }
 }
 ```
 
-## Component API
+## Built With
 
-### ModelSelector Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `value` | `string` | `undefined` | The currently selected model ID |
-| `onValueChange` | `(modelId: string) => void` | `undefined` | Callback when model selection changes |
-| `className` | `string` | `undefined` | Additional CSS classes to apply |
-
-### useApiKeys Hook
-
-Returns an object with the following properties:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `apiKeys` | `ProviderApiKeys` | Object containing all stored API keys |
-| `updateApiKeys` | `(newKeys: ProviderApiKeys) => void` | Function to update stored API keys |
-| `getAvailableProviders` | `() => string[]` | Function that returns array of providers with valid API keys |
-| `isLoaded` | `boolean` | Whether the API keys have been loaded from localStorage |
-
-### useModelValidation Hook
-
-Returns an object with the following properties:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `validateModel` | `(modelId: string) => Promise<ModelValidationResult>` | Async function to fully validate a model (includes API test) |
-| `quickValidateModel` | `(modelId: string) => ModelValidationResult` | Sync function to quickly validate model format and registry availability |
-| `isLoaded` | `boolean` | Whether the validation system is ready |
-
-#### ModelValidationResult
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `isValid` | `boolean` | Whether the model is valid and ready to use |
-| `model` | `unknown \| null` | The validated model instance (if valid) |
-| `error` | `string?` | Error message (if invalid) |
-| `errorType` | `string?` | Error category: `NO_REGISTRY`, `INVALID_MODEL_ID`, `PROVIDER_ERROR`, `API_KEY_ERROR` |
-
-## Requirements
-
-This component requires the following dependencies to be installed in your project:
-
-- React 18+
-- Next.js (for the demo)
-- Tailwind CSS
-- shadcn/ui components (automatically included)
-
-## Development
-
-To run the demo locally:
-
-```bash
-git clone https://github.com/simonorzel26/shadcn-aisdk-model-select.git
-cd shadcn-aisdk-model-select
-npm install
-npm run dev
-```
+- [Next.js 15](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [shadcn/ui](https://ui.shadcn.com/) - UI components
+- [AI SDK](https://sdk.vercel.ai/) - AI integrations
+- [@simonorzel26/ai-models](https://www.npmjs.com/package/@simonorzel26/ai-models) - Model definitions
 
 ## License
 
-MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+MIT License - feel free to use this in your projects!

@@ -14,7 +14,7 @@ import { useApiKeys } from '@/hooks/useApiKeys';
 import { useProviderSettings } from '@/hooks/useProviderSettings';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { ProviderApiKeys } from '@/types/model-selector';
+import { ProviderApiKeys } from '@/types/model';
 
 interface ApiKeySettingsProps {
   open: boolean;
@@ -66,8 +66,8 @@ export function ApiKeySettings({
   };
 
   const handleApiKeyChange = (provider: string, value: string) => {
-    setLocalApiKeys(prev => ({ ...prev, [provider]: value }));
-    setLocalVisibility(prev => ({ ...prev, [provider]: !!value }));
+    setLocalApiKeys((prev: ProviderApiKeys) => ({ ...prev, [provider]: value }));
+    setLocalVisibility((prev: Record<string, boolean>) => ({ ...prev, [provider]: !!value }));
   };
 
   const handleVisibilityToggle = (provider: string, checked: boolean) => {

@@ -15,17 +15,19 @@ import { AiModel } from '@/types/model';
 import { useProviderSettings } from '@/hooks/useProviderSettings';
 import { getProviderDisplayName, getModelDisplayName } from '@/lib/config';
 
-export interface ModelSelectorProps {
+export interface ModelSelectDropdownProps {
   models: AiModel[];
   selectedModel: string;
   onModelChange: (model: string) => void;
+  className?: string;
 }
 
-export function ModelSelector({
+export function ModelSelectDropdown({
   models,
   selectedModel,
   onModelChange,
-}: ModelSelectorProps) {
+  className,
+}: ModelSelectDropdownProps) {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const allProviders = useMemo(() => {
@@ -62,7 +64,7 @@ export function ModelSelector({
   }, [visibleModels]);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className={`flex items-center gap-4 ${className || ''}`}>
       <Select onValueChange={onModelChange} value={selectedModel}>
         <SelectTrigger className="flex-grow">
           <SelectValue placeholder="Select a model..." />

@@ -1,37 +1,59 @@
-'use client';
-
 import { useState, useEffect, useCallback } from 'react';
+import { ProviderVisibilitySettings } from '@/types/model';
 
-const STORAGE_KEY = 'provider-visibility';
-type ProviderVisibility = Record<string, boolean>;
+const STORAGE_KEY = 'ai-model-provider-settings';
 
 export function useProviderSettings() {
-  const [visibility, setVisibility] = useState<ProviderVisibility>({});
+  const [providerVisibility, setProviderVisibility] = useState<ProviderVisibilitySettings>({});
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        setVisibility(JSON.parse(stored));
-      } catch (e) {
-        console.error('Failed to parse provider visibility from storage', e);
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        setProviderVisibility(JSON.parse(stored));
       }
+    } catch (error) {
+      console.error('Failed to load provider settings:', error);
     }
     setIsLoaded(true);
   }, []);
 
-  const setAllProviderVisibility = useCallback(
-    (newVisibility: ProviderVisibility) => {
-      setVisibility(newVisibility);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newVisibility));
-    },
-    [],
-  );
+  const updateProviderVisibility = useCallback((provider: string, visible: boolean) => {
+    setProviderVisibility(prev => {
+      const updated = { ...prev, [provider]: visible };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      } catch (error) {
+        console.error('Failed to save provider settings:', error);
+      }
+      return updated;
+    });
+  }, []);
+
+  const setAllProviderVisibility = useCallback((settings: ProviderVisibilitySettings) => {
+    setProviderVisibility(settings);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    } catch (error) {
+      console.error('Failed to save provider settings:', error);
+    }
+  }, []);
+
+  const resetProviderVisibility = useCallback(() => {
+    setProviderVisibility({});
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      console.error('Failed to reset provider settings:', error);
+    }
+  }, []);
 
   return {
-    providerVisibility: visibility,
-    setAllProviderVisibility,
+    providerVisibility,
     isLoaded,
+    updateProviderVisibility,
+    setAllProviderVisibility,
+    resetProviderVisibility,
   };
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ProviderApiKeys } from '@/types/model-selector';
+import { ProviderApiKeys } from '@/types/model';
 
 const API_KEYS_STORAGE_KEY = 'llm-model-selector-api-keys';
 
