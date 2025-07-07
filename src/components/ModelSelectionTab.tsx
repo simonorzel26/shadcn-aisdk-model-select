@@ -1,131 +1,78 @@
 'use client';
 
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { RotateCcw } from 'lucide-react';
 import { AiModel } from '@/types/model';
 import { useModelSelection } from '@/contexts/ModelSelectionContext';
 import { Command, CommandInput } from '@/components/ui/command';
+import { useModelSortAndFilter } from '@/hooks/useModelSortAndFilter';
+import { useScrollToProvider } from '@/hooks/useScrollToProvider';
 
-export function ModelSelectionTab() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const {
-    state,
-    toggleModel,
-    configurableModels,
-    selectAll,
-    deselectAll,
-    resetToDefault,
-    toggleProvider,
-    toggleCategory,
-  } = useModelSelection();
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const providerRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
-  const [providerToScrollTo, setProviderToScrollTo] = useState<string | null>(null);
+const useModelSelectionHandlers = (
+  configurableModels: AiModel[],
+  state: ReturnType<typeof useModelSelection>['state'],
+  setProviderToScrollTo: (provider: string | null) => void,
+) => {
+  const { toggleModel, toggleCategory, toggleProvider } = useModelSelection();
 
   const handleToggleModel = (modelValue: string) => {
     const model = configurableModels.find(m => m.value === modelValue);
     if (!model) return;
 
     const modelsInProvider = configurableModels.filter(m => m.provider === model.provider);
-    const selectedInProvider = modelsInProvider.filter(m => state.selectedModelIds.has(m.value));
-    const wasSelectedBeforeToggle = state.selectedModelIds.has(modelValue);
+    const hasSelectedModelsBefore = modelsInProvider.some(m => state.selectedModelIds.has(m.value));
+    const isTogglingOn = !state.selectedModelIds.has(modelValue);
 
-    if (selectedInProvider.length === 0 && !wasSelectedBeforeToggle) {
+    if (isTogglingOn && !hasSelectedModelsBefore) {
       setProviderToScrollTo(model.provider);
     }
-
     toggleModel(modelValue);
   };
 
   const handleToggleCategory = (provider: string, category: string, checked: boolean) => {
-    const modelsInProvider = configurableModels.filter(m => m.provider === provider);
-    const hasSelectedInProvider = modelsInProvider.some(m => state.selectedModelIds.has(m.value));
-    if (checked && !hasSelectedInProvider) {
-      setProviderToScrollTo(provider);
+    if (checked) {
+      const modelsInProvider = configurableModels.filter(m => m.provider === provider);
+      const hasSelectedModelsBefore = modelsInProvider.some(m => state.selectedModelIds.has(m.value));
+      if (!hasSelectedModelsBefore) {
+        setProviderToScrollTo(provider);
+      }
     }
     toggleCategory(provider, category, checked);
   };
 
   const handleToggleProvider = (provider: string, checked: boolean) => {
-     const modelsInProvider = configurableModels.filter(m => m.provider === provider);
-    const hasSelectedInProvider = modelsInProvider.some(m => state.selectedModelIds.has(m.value));
-    if (checked && !hasSelectedInProvider) {
-      setProviderToScrollTo(provider);
+    if (checked) {
+      const modelsInProvider = configurableModels.filter(m => m.provider === provider);
+      const hasSelectedModelsBefore = modelsInProvider.some(m => state.selectedModelIds.has(m.value));
+      if (!hasSelectedModelsBefore) {
+        setProviderToScrollTo(provider);
+      }
     }
     toggleProvider(provider, checked);
   };
 
-  const filteredAndGroupedModels = useMemo(() => {
-    const groups: Record<string, Record<string, AiModel[]>> = {};
-    const searchLower = searchTerm.toLowerCase().trim();
+  return { handleToggleModel, handleToggleCategory, handleToggleProvider };
+};
 
-    configurableModels.forEach(model => {
-      if (searchLower) {
-        const providerMatch = model.provider.toLowerCase().includes(searchLower);
-        const modelMatch = model.model.toLowerCase().includes(searchLower);
-        const categoryMatch = model.category.toLowerCase().includes(searchLower);
+export function ModelSelectionTab() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const { state, configurableModels, selectAll, deselectAll, resetToDefault } =
+    useModelSelection();
 
-        if (!providerMatch && !modelMatch && !categoryMatch) {
-          return;
-        }
-      }
+  const { sortedProviderEntries, filteredAndGroupedModels } = useModelSortAndFilter(
+    configurableModels,
+    state.selectedModelIds,
+    searchTerm,
+  );
 
-      if (!groups[model.provider]) {
-        groups[model.provider] = {};
-      }
-      if (!groups[model.provider][model.category]) {
-        groups[model.provider][model.category] = [];
-      }
-      groups[model.provider][model.category].push(model);
-    });
+  const { scrollContainerRef, setProviderToScrollTo, getProviderRef } = useScrollToProvider(
+    sortedProviderEntries,
+  );
 
-    for (const provider in groups) {
-      for (const category in groups[provider]) {
-        groups[provider][category].sort((a, b) => {
-          return a.model.localeCompare(b.model);
-        });
-      }
-    }
-
-    return groups;
-  }, [configurableModels, searchTerm]);
-
-  const sortedProviderEntries = useMemo(() => {
-    const providers = Object.entries(filteredAndGroupedModels);
-
-    providers.sort(([providerA, categoriesA], [providerB, categoriesB]) => {
-      const modelsA = Object.values(categoriesA).flat();
-      const modelsB = Object.values(categoriesB).flat();
-
-      const hasSelectedA = modelsA.some(m => state.selectedModelIds.has(m.value));
-      const hasSelectedB = modelsB.some(m => state.selectedModelIds.has(m.value));
-
-      if (hasSelectedA !== hasSelectedB) {
-        return hasSelectedA ? -1 : 1;
-      }
-
-      return providerA.localeCompare(providerB);
-    });
-
-    return providers;
-  }, [filteredAndGroupedModels, state.selectedModelIds]);
-
-  useEffect(() => {
-    if (providerToScrollTo) {
-      const node = providerRefs.current.get(providerToScrollTo);
-      if (node) {
-        node.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
-      setProviderToScrollTo(null);
-    }
-  }, [providerToScrollTo, sortedProviderEntries]); // re-run when list is sorted
-
+  const { handleToggleModel, handleToggleCategory, handleToggleProvider } =
+    useModelSelectionHandlers(configurableModels, state, setProviderToScrollTo);
 
   const totalSelectedCount = state.selectedModelIds.size;
   const filteredModelsInView = useMemo(() =>
@@ -146,7 +93,6 @@ export function ModelSelectionTab() {
     <Command
       className="space-y-3 bg-transparent"
       filter={(value, search) => {
-        // We do our own filtering, so we just need to tell cmdk to show everything
         if (value.includes(search)) return 1;
         return 0;
       }}
@@ -170,22 +116,13 @@ export function ModelSelectionTab() {
             )}
           </div>
           <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost" size="sm" onClick={selectAll}
-              className="h-full px-2 text-xs"
-            >
+            <Button variant="ghost" size="sm" onClick={selectAll} className="h-full px-2 text-xs">
               All
             </Button>
-            <Button
-              variant="ghost" size="sm" onClick={deselectAll}
-              className="h-full px-2 text-xs"
-            >
+            <Button variant="ghost" size="sm" onClick={deselectAll} className="h-full px-2 text-xs">
               None
             </Button>
-            <Button
-              variant="ghost" size="sm" onClick={resetToDefault}
-              className="h-full px-2 text-xs"
-            >
+            <Button variant="ghost" size="sm" onClick={resetToDefault} className="h-full px-2 text-xs">
               <RotateCcw className="mr-1 h-3 w-3" />
               Reset
             </Button>
@@ -201,21 +138,20 @@ export function ModelSelectionTab() {
         ) : (
           sortedProviderEntries.map(([provider, categories]) => {
             const providerModels = Object.values(categories).flat();
-            const selectedProviderModels = providerModels.filter(m => state.selectedModelIds.has(m.value));
-            const isAllProviderSelected = selectedProviderModels.length > 0 && selectedProviderModels.length === providerModels.length;
-            const isProviderIndeterminate = selectedProviderModels.length > 0 && !isAllProviderSelected;
+            const selectedProviderModels = providerModels.filter(m =>
+              state.selectedModelIds.has(m.value),
+            );
+            const isAllProviderSelected =
+              selectedProviderModels.length > 0 &&
+              selectedProviderModels.length === providerModels.length;
+            const isProviderIndeterminate =
+              selectedProviderModels.length > 0 && !isAllProviderSelected;
 
             return (
               <div
                 key={provider}
                 className="border rounded-md p-3 space-y-2"
-                ref={node => {
-                  if (node) {
-                    providerRefs.current.set(provider, node);
-                  } else {
-                    providerRefs.current.delete(provider);
-                  }
-                }}
+                ref={getProviderRef(provider)}
               >
                 <div className="flex items-center justify-between">
                   <label
@@ -226,21 +162,24 @@ export function ModelSelectionTab() {
                       id={`provider-${provider}`}
                       checked={isAllProviderSelected}
                       indeterminate={isProviderIndeterminate}
-                      onCheckedChange={(checked) => handleToggleProvider(provider, !!checked)}
+                      onCheckedChange={checked => handleToggleProvider(provider, !!checked)}
                       aria-label={`Select all ${provider} models`}
                     />
-                    <span className="text-sm font-medium">
-                      {provider}
-                    </span>
+                    <span className="text-sm font-medium">{provider}</span>
                   </label>
                 </div>
 
                 <div className="space-y-3 pl-2">
                   {Object.entries(categories).map(([category, models]) => {
                     const categoryModels = models;
-                    const selectedCategoryModels = categoryModels.filter(m => state.selectedModelIds.has(m.value));
-                    const isAllCategorySelected = selectedCategoryModels.length > 0 && selectedCategoryModels.length === categoryModels.length;
-                    const isCategoryIndeterminate = selectedCategoryModels.length > 0 && !isAllCategorySelected;
+                    const selectedCategoryModels = categoryModels.filter(m =>
+                      state.selectedModelIds.has(m.value),
+                    );
+                    const isAllCategorySelected =
+                      selectedCategoryModels.length > 0 &&
+                      selectedCategoryModels.length === categoryModels.length;
+                    const isCategoryIndeterminate =
+                      selectedCategoryModels.length > 0 && !isAllCategorySelected;
 
                     return (
                       <div key={category} className="space-y-1">
@@ -252,7 +191,9 @@ export function ModelSelectionTab() {
                             id={`category-${provider}-${category}`}
                             checked={isAllCategorySelected}
                             indeterminate={isCategoryIndeterminate}
-                            onCheckedChange={(checked) => handleToggleCategory(provider, category, !!checked)}
+                            onCheckedChange={checked =>
+                              handleToggleCategory(provider, category, !!checked)
+                            }
                             aria-label={`Select all ${category} models from ${provider}`}
                           />
                           <div className="text-xs font-medium text-muted-foreground capitalize">

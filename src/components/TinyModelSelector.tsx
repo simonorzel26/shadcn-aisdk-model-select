@@ -5,40 +5,47 @@ import {
   SelectContent,
   SelectTrigger,
 } from '@/components/ui/select';
-import { AiModel } from '@/types/model';
 import { Brain } from 'lucide-react';
 import { ModelList } from './ModelList';
 import { useModelSelection } from '@/contexts/ModelSelectionContext';
 
 export interface TinyModelSelectorProps {
-  models: AiModel[];
   placeholder?: string;
   className?: string;
 }
 
 export function TinyModelSelector({
-  models,
   placeholder = 'Select Model',
   className,
 }: TinyModelSelectorProps) {
-  const { selectedModel, setSelectedModel, selectedModels, state } = useModelSelection();
+  const { selectedModel, setSelectedModel, selectedModels, allModels, state } =
+    useModelSelection();
 
-  const modelsToDisplay = state.isLoaded ? selectedModels : models;
+  const isLoading = !state.isLoaded;
 
   const selectedModelLabel =
-    models.find(m => m.value === selectedModel)?.model || placeholder;
+    allModels.find(m => m.value === selectedModel)?.model || placeholder;
 
   return (
     <div className={`flex items-center ${className || ''}`}>
-      <Select onValueChange={setSelectedModel} value={selectedModel}>
-        <SelectTrigger size="sm" className="gap-0 m-0 px-2 py-0 text-[10px] border rounded-md bg-background hover:bg-muted/80 focus:ring-0 focus:ring-none focus:ring-offset-0 border-none focus:border-none active:border-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
+      <Select
+        onValueChange={setSelectedModel}
+        value={selectedModel || ''}
+        disabled={isLoading}
+      >
+        <SelectTrigger
+          size="sm"
+          className="gap-0 m-0 px-2 py-0 text-[10px] border rounded-md bg-background hover:bg-muted/80 focus:ring-0 focus:ring-none focus:ring-offset-0 border-none focus:border-none active:border-none focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        >
           <div className="flex items-end">
             <Brain className="h-0.5 w-0.5 mr-1 p-0.5 text-muted-foreground" />
-            <span className="truncate">{selectedModelLabel}</span>
+            <span className="truncate">
+              {isLoading ? '...' : selectedModelLabel}
+            </span>
           </div>
         </SelectTrigger>
         <SelectContent className="max-h-96">
-          <ModelList models={modelsToDisplay} />
+          {!isLoading && <ModelList models={selectedModels} />}
         </SelectContent>
       </Select>
     </div>
