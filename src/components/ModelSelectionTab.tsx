@@ -91,42 +91,40 @@ export function ModelSelectionTab() {
 
   return (
     <Command
-      className="space-y-3 bg-transparent"
+      className="bg-transparent p-4"
       filter={(value, search) => {
         if (value.includes(search)) return 1;
         return 0;
       }}
     >
-      <div className="space-y-3">
-        <CommandInput
-          placeholder="Search providers, models, or categories..."
-          value={searchTerm}
-          onValueChange={setSearchTerm}
-          className="h-8 text-sm"
-        />
+      <CommandInput
+        placeholder="Search providers, models, or categories..."
+        value={searchTerm}
+        onValueChange={setSearchTerm}
+        className="h-8 text-sm"
+      />
 
-        <div className="flex items-center justify-between h-7">
-          <div className="text-xs text-muted-foreground px-1">
-            {searchTerm ? (
-              <>
-                {filteredSelectedCount} of {filteredModelsInView.length} matching models selected
-              </>
-            ) : (
-              `${totalSelectedCount} of ${configurableModels.length} models selected`
-            )}
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="sm" onClick={selectAll} className="h-full px-2 text-xs">
-              All
-            </Button>
-            <Button variant="ghost" size="sm" onClick={deselectAll} className="h-full px-2 text-xs">
-              None
-            </Button>
-            <Button variant="ghost" size="sm" onClick={resetToDefault} className="h-full px-2 text-xs">
-              <RotateCcw className="mr-1 h-3 w-3" />
-              Reset
-            </Button>
-          </div>
+      <div className="flex items-center justify-between h-7 my-3">
+        <div className="text-xs text-muted-foreground px-1">
+          {searchTerm ? (
+            <>
+              {filteredSelectedCount} of {filteredModelsInView.length} matching models selected
+            </>
+          ) : (
+            `${totalSelectedCount} of ${configurableModels.length} models selected`
+          )}
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button variant="ghost" size="sm" onClick={selectAll} className="h-full px-2 text-xs">
+            All
+          </Button>
+          <Button variant="ghost" size="sm" onClick={deselectAll} className="h-full px-2 text-xs">
+            None
+          </Button>
+          <Button variant="ghost" size="sm" onClick={resetToDefault} className="h-full px-2 text-xs">
+            <RotateCcw className="mr-1 h-3 w-3" />
+            Reset
+          </Button>
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -8,10 +9,8 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useApiKeys } from '@/hooks/useApiKeys';
 import { ModelSelectionTab } from './ModelSelectionTab';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { ApiKeysTab } from './ApiKeysTab';
 
 export interface ModelSettingsDialogProps {
   open: boolean;
@@ -26,7 +25,7 @@ export function ModelSettingsDialog({
   providers,
   showApiKeys = true,
 }: ModelSettingsDialogProps) {
-  const { apiKeys, setApiKey } = useApiKeys(providers);
+  const [activeTab, setActiveTab] = useState('modelSelection');
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,31 +38,28 @@ export function ModelSettingsDialog({
               : 'Select the models you want to display in the dropdown.'}
           </DialogDescription>
         </DialogHeader>
-        <div className="flex-grow overflow-y-auto pt-4">
+        <div className="flex-grow pt-4 overflow-y-auto ">
           {showApiKeys ? (
-            <Tabs defaultValue="modelSelection">
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="modelSelection">Model Selection</TabsTrigger>
-                <TabsTrigger value="apiKeys">API Keys</TabsTrigger>
+                <TabsTrigger
+                  value="modelSelection"
+                  className="data-[state=active]:ring-2 data-[state=active]:ring-primary"
+                >
+                  Model Selection
+                </TabsTrigger>
+                <TabsTrigger
+                  value="apiKeys"
+                  className="data-[state=active]:ring-2 data-[state=active]:ring-primary"
+                >
+                  API Keys
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="modelSelection">
                 <ModelSelectionTab />
               </TabsContent>
               <TabsContent value="apiKeys">
-                <div className="p-4 space-y-4">
-                  {providers.map(provider => (
-                    <div key={provider} className="space-y-2">
-                      <Label htmlFor={`${provider}-key`}>{provider}</Label>
-                      <Input
-                        id={`${provider}-key`}
-                        type="password"
-                        placeholder={`Enter ${provider} API Key`}
-                        value={apiKeys[provider] || ''}
-                        onChange={e => setApiKey(provider, e.target.value)}
-                      />
-                    </div>
-                  ))}
-                </div>
+                <ApiKeysTab providers={providers} />
               </TabsContent>
             </Tabs>
           ) : (
