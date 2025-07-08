@@ -28,8 +28,10 @@ The **ModelSelectDropdown** component is the core of this project - an isolated,
 
 ## Installation
 
+To add the component to your project, run the following command:
+
 ```bash
-bun install
+npx shadcn-cli@latest add https://shadcn-aisdk-model-select.vercel.app/r/model-select-package.json
 ```
 
 ## Usage Examples
