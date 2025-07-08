@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { SelectItem } from '@/components/ui/select';
-import { AiModel } from '@/types/model';
+import { AiModel } from '../types/model';
 
 export function ModelList({ models }: { models: AiModel[] }) {
   const groupedModels = useMemo(() => {

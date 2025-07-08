@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/select';
 import { Brain } from 'lucide-react';
 import { ModelList } from './ModelList';
-import { useModelSelection } from '@/contexts/ModelSelectionContext';
+import { useModelSelection } from '../contexts/ModelSelectionContext';
 
 export interface TinyModelSelectorProps {
   placeholder?: string;

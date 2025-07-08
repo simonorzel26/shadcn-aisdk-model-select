@@ -1,9 +1,9 @@
 'use client';
 
 import { Puzzle } from 'lucide-react';
-import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
-import { getFilteredModels } from '@/lib/models';
-import { TinyModelSelector } from '@/components/TinyModelSelector';
+import { ModelSelectionProvider, useModelSelection } from '@/model-select-package/contexts/ModelSelectionContext';
+import { getFilteredModels } from '@/model-select-package/lib/models';
+import { TinyModelSelector } from '@/model-select-package/components/TinyModelSelector';
 import { Card, CardContent } from '@/components/ui/card';
 import { CodeBlock } from './CodeBlock';
 import { DocSection } from './DocSection';

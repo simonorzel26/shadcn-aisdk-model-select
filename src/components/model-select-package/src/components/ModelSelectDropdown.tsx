@@ -10,8 +10,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Settings } from 'lucide-react';
 import { ModelSettingsDialog } from './ModelSettingsDialog';
-import { useModelSelection } from '@/contexts/ModelSelectionContext';
-import { AiModel, ModelSelectDropdownSettings } from '@/types/model';
+import { useModelSelection } from '../contexts/ModelSelectionContext';
+import { AiModel, ModelSelectDropdownSettings } from '../types/model';
 import { ModelList } from './ModelList';
 
 function ModelSelectWithSettings({

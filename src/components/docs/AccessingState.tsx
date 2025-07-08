@@ -1,13 +1,13 @@
 'use client';
 
 import { TestTube } from 'lucide-react';
-import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
-import { getFilteredModels } from '@/lib/models';
-import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
+import { ModelSelectionProvider, useModelSelection } from '@/model-select-package/contexts/ModelSelectionContext';
+import { getFilteredModels } from '@/model-select-package/lib/models';
+import { ModelSelectDropdown } from '@/model-select-package/components/ModelSelectDropdown';
 import { Card, CardContent } from '@/components/ui/card';
 import { CodeBlock } from './CodeBlock';
 import { DocSection } from './DocSection';
-import type { AiModel } from '@/types/model';
+import type { AiModel } from '@/model-select-package/types/model';
 
 function StateDisplay() {
   const { selectedModel, selectedModels, allModels, configurableModels } = useModelSelection();
@@ -54,7 +54,7 @@ function DemoContainer({ models }: { models: AiModel[] }) {
 
 export function AccessingState() {
   const code = `
-import { useModelSelection } from '@/contexts/ModelSelectionContext';
+import { useModelSelection } from '@/model-select-package/contexts/ModelSelectionContext';
 
 function MyComponent() {
   const {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { AiModel } from '@/types/model';
+import { AiModel } from '../types/model';
 
 export function useModelSortAndFilter(
   models: AiModel[],

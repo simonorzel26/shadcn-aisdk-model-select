@@ -4,7 +4,7 @@ import { useMemo, useState, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Command, CommandInput } from '@/components/ui/command';
-import { useApiKeys } from '@/hooks/useApiKeys';
+import { useApiKeys } from '../hooks/useApiKeys';
 
 interface ApiKeysTabProps {
   providers: string[];

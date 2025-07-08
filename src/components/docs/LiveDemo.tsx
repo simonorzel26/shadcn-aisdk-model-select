@@ -1,12 +1,12 @@
 'use client';
 
-import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
-import { TinyModelSelector } from '@/components/TinyModelSelector';
-import { useModelSelection, ModelSelectionProvider } from '@/contexts/ModelSelectionContext';
-import { getFilteredModels } from '@/lib/models';
+import { ModelSelectDropdown } from '@/model-select-package/components/ModelSelectDropdown';
+import { TinyModelSelector } from '@/model-select-package/components/TinyModelSelector';
+import { useModelSelection, ModelSelectionProvider } from '@/model-select-package/contexts/ModelSelectionContext';
+import { getFilteredModels } from '@/model-select-package/lib/models';
 import { CodeBlock } from './CodeBlock';
 import { Card, CardContent } from '@/components/ui/card';
-import type { AiModel } from '@/types/model';
+import type { AiModel } from '@/model-select-package/types/model';
 
 function DemoUI({ models }: { models: AiModel[] }) {
   const { selectedModel } = useModelSelection();
