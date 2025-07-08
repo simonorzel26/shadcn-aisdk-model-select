@@ -1,8 +1,8 @@
 'use client';
 
 import { BotMessageSquare } from 'lucide-react';
-import { getFilteredModels } from '@/model-select-package/lib/models';
-import type { AiModel } from '@/model-select-package/types/model';
+import { getFilteredModels } from '@/lib/models';
+import type { AiModel } from '@/types/model';
 import { Card, CardContent } from '@/components/ui/card';
 import { CodeBlock } from './CodeBlock';
 import { DocSection } from './DocSection';
@@ -33,7 +33,7 @@ export function GettingStarted() {
   });
 
   const usageCode = `
-import { getFilteredModels } from '@/model-select-package/lib/models';
+import { getFilteredModels } from '@simonorzel26/ai-models';
 
 // Get all chat models from OpenAI, Anthropic, and Google
 const models = getFilteredModels({
