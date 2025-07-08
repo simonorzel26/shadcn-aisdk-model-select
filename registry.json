@@ -36,63 +36,63 @@
       ],
       "files": [
         {
-          "path": "src/components/model-select-package/src/components/index.ts",
+          "path": "src/components/model-select-package/components/index.ts",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/components/ApiKeysTab.tsx",
+          "path": "src/components/model-select-package/components/ApiKeysTab.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/components/ModelList.tsx",
+          "path": "src/components/model-select-package/components/ModelList.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/components/ModelSelectDropdown.tsx",
+          "path": "src/components/model-select-package/components/ModelSelectDropdown.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/components/ModelSelectionTab.tsx",
+          "path": "src/components/model-select-package/components/ModelSelectionTab.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/components/ModelSettingsDialog.tsx",
+          "path": "src/components/model-select-package/components/ModelSettingsDialog.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/components/TinyModelSelector.tsx",
+          "path": "src/components/model-select-package/components/TinyModelSelector.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/contexts/ModelSelectionContext.tsx",
+          "path": "src/components/model-select-package/contexts/ModelSelectionContext.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/src/hooks/useApiKeys.ts",
+          "path": "src/components/model-select-package/hooks/useApiKeys.ts",
           "type": "registry:hook"
         },
         {
-          "path": "src/components/model-select-package/src/hooks/useModelSortAndFilter.ts",
+          "path": "src/components/model-select-package/hooks/useModelSortAndFilter.ts",
           "type": "registry:hook"
         },
         {
-          "path": "src/components/model-select-package/src/hooks/useScrollToProvider.ts",
+          "path": "src/components/model-select-package/hooks/useScrollToProvider.ts",
           "type": "registry:hook"
         },
         {
-          "path": "src/components/model-select-package/src/lib/config.ts",
+          "path": "src/components/model-select-package/lib/config.ts",
           "type": "registry:lib"
         },
         {
-          "path": "src/components/model-select-package/src/lib/models.ts",
+          "path": "src/components/model-select-package/lib/models.ts",
           "type": "registry:lib"
         },
         {
-          "path": "src/components/model-select-package/src/lib/utils.ts",
+          "path": "src/components/model-select-package/lib/utils.ts",
           "type": "registry:lib"
         },
         {
-          "path": "src/components/model-select-package/src/types/model.ts",
+          "path": "src/components/model-select-package/types/model.ts",
           "type": "registry:lib"
         }
       ]
