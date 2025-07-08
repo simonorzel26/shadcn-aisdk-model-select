@@ -1,0 +1,101 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "model-select",
+  "homepage": "https://github.com/simonorzel/shadcn-aisdk-model-select",
+  "items": [
+    {
+      "name": "model-select-package",
+      "type": "registry:component",
+      "title": "Model Select Package",
+      "description": "A comprehensive model select component package with settings, API key management, and context providers.",
+      "dependencies": [
+        "lucide-react",
+        "@simonorzel/ai-models",
+        "clsx",
+        "tailwind-merge",
+        "cmdk",
+        "@radix-ui/react-checkbox",
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-label",
+        "@radix-ui/react-select",
+        "@radix-ui/react-slot",
+        "@radix-ui/react-tabs"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "label",
+        "select",
+        "dialog",
+        "tabs",
+        "checkbox",
+        "command",
+        "tooltip",
+        "card",
+        "switch"
+      ],
+      "files": [
+        {
+          "path": "src/components/model-select-package/src/components/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/components/ApiKeysTab.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/components/ModelList.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/components/ModelSelectDropdown.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/components/ModelSelectionTab.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/components/ModelSettingsDialog.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/components/TinyModelSelector.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/contexts/ModelSelectionContext.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/model-select-package/src/hooks/useApiKeys.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "src/components/model-select-package/src/hooks/useModelSortAndFilter.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "src/components/model-select-package/src/hooks/useScrollToProvider.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "src/components/model-select-package/src/lib/config.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/components/model-select-package/src/lib/models.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/components/model-select-package/src/lib/utils.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/components/model-select-package/src/types/model.ts",
+          "type": "registry:lib"
+        }
+      ]
+    }
+  ]
+}
