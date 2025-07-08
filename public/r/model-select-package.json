@@ -6,7 +6,7 @@
   "description": "A comprehensive model select component package with settings, API key management, and context providers.",
   "dependencies": [
     "lucide-react",
-    "@simonorzel/ai-models",
+    "@simonorzel26/ai-models",
     "clsx",
     "tailwind-merge",
     "cmdk",
@@ -16,8 +16,7 @@
     "@radix-ui/react-select",
     "@radix-ui/react-slot",
     "@radix-ui/react-tabs",
-    "class-variance-authority",
-    "@simonorzel26/ai-models"
+    "class-variance-authority"
   ],
   "registryDependencies": [
     "button",
