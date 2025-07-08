@@ -3,8 +3,8 @@ import path from 'path';
 
 const packageRoot = 'src/components/model-select-package';
 const srcDir = path.join(packageRoot, 'src');
-const registryFile = path.join(packageRoot, 'registry.json');
-const registryBaseDir = 'model-select';
+const registryFile = path.join('public', 'shadcn-aisdk-model-select.json');
+const registryBaseDir = 'shadcn-aisdk-model-select';
 
 async function getFiles(dir) {
   const dirents = await fs.readdir(dir, { withFileTypes: true });
@@ -21,10 +21,13 @@ async function generateRegistry() {
   const files = await getFiles(srcDir);
 
   const registry = {
-    name: 'model-select',
-    version: '0.0.1',
-    dependencies: ['lucide-react', 'react', 'react-dom', 'tailwindcss-animate'],
-    registryDependencies: [
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "shadcn-aisdk-model-select",
+    "type": "registry:component",
+    "title": "AI SDK Model Select",
+    "description": "A reusable React component for selecting LLM models with API key management, built with shadcn/ui and Vercel AI SDK.",
+    "dependencies": ["clsx", "tailwind-merge", "lucide-react"],
+    "registryDependencies": [
       'button',
       'dialog',
       'tabs',
@@ -39,7 +42,7 @@ async function generateRegistry() {
       'textarea',
       'form',
     ],
-    files: [],
+    "files": [],
   };
 
   for (const file of files) {
@@ -51,7 +54,8 @@ async function generateRegistry() {
 
     registry.files.push({
       path: registryPath,
-      content: content.replace(/'@\/components\/ui\/(.*?)'/g,`'@/components/ui/$1'`),
+      content: content,
+      type: 'registry:component',
     });
   }
 
