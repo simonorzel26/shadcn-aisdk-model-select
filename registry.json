@@ -36,27 +36,31 @@
       ],
       "files": [
         {
-          "path": "src/components/index.ts",
+          "path": "src/components/shadcn-aisdk-model-select/index.ts",
           "type": "registry:component"
         },
         {
-          "path": "src/components/ModelList.tsx",
+          "path": "src/components/shadcn-aisdk-model-select/ModelList.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/ModelSelectDropdown.tsx",
+          "path": "src/components/shadcn-aisdk-model-select/ModelSelectDropdown.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/ModelSelectionTab.tsx",
+          "path": "src/components/shadcn-aisdk-model-select/ModelSelectionTab.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/ModelSettingsDialog.tsx",
+          "path": "src/components/shadcn-aisdk-model-select/ModelSettingsDialog.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/TinyModelSelector.tsx",
+          "path": "src/components/shadcn-aisdk-model-select/TinyModelSelector.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "src/components/shadcn-aisdk-model-select/theme-provider.tsx",
           "type": "registry:component"
         },
         {
