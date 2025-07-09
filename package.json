@@ -54,7 +54,7 @@
     "lint": "eslint . --fix",
     "build:lib": "tsc --build --verbose",
     "check": "bun -v",
-    "generate:registry": "bun scripts/generate-registry.mjs"
+    "generate:registry": "bunx shadcn@latest build"
   },
   "dependencies": {
     "@ai-sdk/amazon-bedrock": "^2.2.10",

@@ -4,13 +4,13 @@
   "homepage": "https://github.com/simonorzel/shadcn-aisdk-model-select",
   "items": [
     {
-      "name": "model-select-package",
+      "name": "shadcn-aisdk-model-select",
       "type": "registry:component",
-      "title": "Model Select Package",
-      "description": "A comprehensive model select component package with settings, API key management, and context providers.",
+      "title": "Shadcn AI SDK Model Select",
+      "description": "A comprehensive model select component that integrates with the Vercel AI SDK, providing model selection, settings, API key management, and context providers for building AI-powered applications.",
       "dependencies": [
         "lucide-react",
-        "@simonorzel26/ai-models",
+        "@simonorzel/ai-models",
         "clsx",
         "tailwind-merge",
         "cmdk",
@@ -36,63 +36,59 @@
       ],
       "files": [
         {
-          "path": "src/components/model-select-package/components/index.ts",
+          "path": "src/components/index.ts",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/components/ApiKeysTab.tsx",
+          "path": "src/components/ModelList.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/components/ModelList.tsx",
+          "path": "src/components/ModelSelectDropdown.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/components/ModelSelectDropdown.tsx",
+          "path": "src/components/ModelSelectionTab.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/components/ModelSelectionTab.tsx",
+          "path": "src/components/ModelSettingsDialog.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/components/ModelSettingsDialog.tsx",
+          "path": "src/components/TinyModelSelector.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/components/TinyModelSelector.tsx",
+          "path": "src/contexts/ModelSelectionContext.tsx",
           "type": "registry:component"
         },
         {
-          "path": "src/components/model-select-package/contexts/ModelSelectionContext.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "src/components/model-select-package/hooks/useApiKeys.ts",
+          "path": "src/hooks/useApiKeys.ts",
           "type": "registry:hook"
         },
         {
-          "path": "src/components/model-select-package/hooks/useModelSortAndFilter.ts",
+          "path": "src/hooks/useModelSortAndFilter.ts",
           "type": "registry:hook"
         },
         {
-          "path": "src/components/model-select-package/hooks/useScrollToProvider.ts",
+          "path": "src/hooks/useScrollToProvider.ts",
           "type": "registry:hook"
         },
         {
-          "path": "src/components/model-select-package/lib/config.ts",
+          "path": "src/lib/config.ts",
           "type": "registry:lib"
         },
         {
-          "path": "src/components/model-select-package/lib/models.ts",
+          "path": "src/lib/models.ts",
           "type": "registry:lib"
         },
         {
-          "path": "src/components/model-select-package/lib/utils.ts",
+          "path": "src/lib/utils.ts",
           "type": "registry:lib"
         },
         {
-          "path": "src/components/model-select-package/types/model.ts",
+          "path": "src/types/model.ts",
           "type": "registry:lib"
         }
       ]
