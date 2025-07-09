@@ -10,7 +10,7 @@
       "description": "A comprehensive model select component that integrates with the Vercel AI SDK, providing model selection, settings, API key management, and context providers for building AI-powered applications.",
       "dependencies": [
         "lucide-react",
-        "@simonorzel/ai-models",
+        "@simonorzel26/ai-models",
         "clsx",
         "tailwind-merge",
         "cmdk",

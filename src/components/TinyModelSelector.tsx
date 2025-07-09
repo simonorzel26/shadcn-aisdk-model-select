@@ -12,25 +12,39 @@ import { useModelSelection } from '@/contexts/ModelSelectionContext';
 export interface TinyModelSelectorProps {
   placeholder?: string;
   className?: string;
+  value?: string;
+  onValueChange?: (modelValue: string) => void;
 }
 
 export function TinyModelSelector({
   placeholder = 'Select Model',
   className,
+  value,
+  onValueChange,
 }: TinyModelSelectorProps) {
-  const { selectedModel, setSelectedModel, selectedModels, allModels, state } =
-    useModelSelection();
+  const {
+    selectedModel: contextSelectedModel,
+    setSelectedModel: setContextSelectedModel,
+    selectedModels,
+    allModels,
+    state,
+  } = useModelSelection();
+
+  const isControlled = value !== undefined;
+
+  const currentModel = isControlled ? value : contextSelectedModel;
+  const handleModelChange = isControlled ? onValueChange : setContextSelectedModel;
 
   const isLoading = !state.isLoaded;
 
   const selectedModelLabel =
-    allModels.find(m => m.value === selectedModel)?.model || placeholder;
+    allModels.find(m => m.value === currentModel)?.model || placeholder;
 
   return (
     <div className={`flex items-center ${className || ''}`}>
       <Select
-        onValueChange={setSelectedModel}
-        value={selectedModel || ''}
+        onValueChange={handleModelChange}
+        value={currentModel || ''}
         disabled={isLoading}
       >
         <SelectTrigger
