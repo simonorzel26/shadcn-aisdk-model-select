@@ -60,10 +60,6 @@
           "type": "registry:component"
         },
         {
-          "path": "src/components/shadcn-aisdk-model-select/theme-provider.tsx",
-          "type": "registry:component"
-        },
-        {
           "path": "src/contexts/ModelSelectionContext.tsx",
           "type": "registry:component"
         },
@@ -78,18 +74,6 @@
         {
           "path": "src/hooks/useScrollToProvider.ts",
           "type": "registry:hook"
-        },
-        {
-          "path": "src/lib/config.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "src/lib/models.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "src/lib/utils.ts",
-          "type": "registry:lib"
         },
         {
           "path": "src/types/model.ts",

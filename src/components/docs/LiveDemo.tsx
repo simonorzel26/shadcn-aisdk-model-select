@@ -1,7 +1,7 @@
 'use client';
 
-import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
-import { TinyModelSelector } from '@/components/TinyModelSelector';
+import { ModelSelectDropdown } from '@/components/shadcn-aisdk-model-select';
+import { TinyModelSelector } from '@/components/shadcn-aisdk-model-select';
 import { useModelSelection, ModelSelectionProvider } from '@/contexts/ModelSelectionContext';
 import { getFilteredModels } from '@/lib/models';
 import { CodeBlock } from './CodeBlock';

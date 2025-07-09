@@ -3,7 +3,7 @@
 import { Puzzle } from 'lucide-react';
 import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
 import { getFilteredModels } from '@/lib/models';
-import { TinyModelSelector } from '@/components/TinyModelSelector';
+import { TinyModelSelector } from '@/components/shadcn-aisdk-model-select/TinyModelSelector';
 import { Card, CardContent } from '@/components/ui/card';
 import { CodeBlock } from './CodeBlock';
 import { DocSection } from './DocSection';

@@ -3,8 +3,8 @@
 import { AppWindow } from 'lucide-react';
 import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
 import { getFilteredModels } from '@/lib/models';
-import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
-import { TinyModelSelector } from '@/components/TinyModelSelector';
+import { ModelSelectDropdown } from '@/components/shadcn-aisdk-model-select';
+import { TinyModelSelector } from '@/components/shadcn-aisdk-model-select';
 import { Card, CardContent } from '@/components/ui/card';
 import { CodeBlock } from './CodeBlock';
 import { DocSection } from './DocSection';
