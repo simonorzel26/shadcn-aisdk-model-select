@@ -2,7 +2,7 @@
 
 import { ModelSelectDropdown } from '@/components/shadcn-aisdk-model-select';
 import { TinyModelSelector } from '@/components/shadcn-aisdk-model-select';
-import { useModelSelection, ModelSelectionProvider } from '@/contexts/ModelSelectionContext';
+import { useModelSelection, ModelSelectionProvider } from '@/components/shadcn-aisdk-model-select/ModelSelectionContext';
 import { getFilteredModels } from '@/lib/models';
 import { CodeBlock } from './CodeBlock';
 import { Card, CardContent } from '@/components/ui/card';

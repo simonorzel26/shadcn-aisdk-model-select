@@ -1,7 +1,7 @@
 'use client';
 
 import { Puzzle } from 'lucide-react';
-import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
+import { ModelSelectionProvider, useModelSelection } from '@/components/shadcn-aisdk-model-select/ModelSelectionContext';
 import { getFilteredModels } from '@/lib/models';
 import { TinyModelSelector } from '@/components/shadcn-aisdk-model-select/TinyModelSelector';
 import { Card, CardContent } from '@/components/ui/card';

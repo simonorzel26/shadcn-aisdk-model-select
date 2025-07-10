@@ -1,7 +1,7 @@
 'use client';
 
 import { TestTube } from 'lucide-react';
-import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
+import { ModelSelectionProvider, useModelSelection } from '@/components/shadcn-aisdk-model-select/ModelSelectionContext';
 import { getFilteredModels } from '@/lib/models';
 import { ModelSelectDropdown } from '@/components/shadcn-aisdk-model-select';
 import { Card, CardContent } from '@/components/ui/card';
@@ -54,7 +54,7 @@ function DemoContainer({ models }: { models: AiModel[] }) {
 
 export function AccessingState() {
   const code = `
-import { useModelSelection } from '@/contexts/ModelSelectionContext';
+import { useModelSelection } from '@/components/shadcn-aisdk-model-select/ModelSelectionContext';
 
 function MyComponent() {
   const {

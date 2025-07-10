@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Settings } from 'lucide-react';
 import { ModelSettingsDialog } from './ModelSettingsDialog';
-import { useModelSelection } from '@/contexts/ModelSelectionContext';
+import { useModelSelection } from './ModelSelectionContext';
 import { AiModel, ModelSelectDropdownSettings } from '@/types/model';
 import { ModelList } from './ModelList';
 
@@ -49,7 +49,7 @@ function ModelSelectWithSettings({
             <span>{isLoading ? 'Loading...' : selectedModelLabel}</span>
           </SelectValue>
         </SelectTrigger>
-        <SelectContent className="max-h-96">
+        <SelectContent>
           {isLoading ? (
             <div className="px-2 py-4 text-center text-sm text-muted-foreground">
               Loading...
@@ -108,7 +108,7 @@ export function ModelSelectDropdown({
               <span>{selectedModelLabel}</span>
             </SelectValue>
           </SelectTrigger>
-          <SelectContent className="max-h-96">
+          <SelectContent>
             <ModelList models={models} />
           </SelectContent>
         </Select>

@@ -1,7 +1,7 @@
 'use client';
 
 import { AppWindow } from 'lucide-react';
-import { ModelSelectionProvider, useModelSelection } from '@/contexts/ModelSelectionContext';
+import { ModelSelectionProvider, useModelSelection } from '@/components/shadcn-aisdk-model-select/ModelSelectionContext';
 import { getFilteredModels } from '@/lib/models';
 import { ModelSelectDropdown } from '@/components/shadcn-aisdk-model-select';
 import { TinyModelSelector } from '@/components/shadcn-aisdk-model-select';
@@ -62,7 +62,7 @@ function TinyDemo() {
   initialModel="${initialModel}"
 >
   <p>Selected: {selectedModel}</p>
-  <TinyModelSelector />
+  <TinyModelSelector /> {/* Global state mode (default) */}
 </ModelSelectionProvider>
   `;
 
@@ -88,7 +88,7 @@ function TinyDemo() {
       <div className="mt-8">
         <h3 className="text-lg font-semibold text-foreground mb-2">2. TinyModelSelector</h3>
         <p className="mb-4">
-          A minimal, secondary selector that mirrors the main dropdown&apos;s state. It&apos;s perfect for unobtrusive placement in your UI, like the model switcher in Cursor. It requires no props and works seamlessly with the provider.
+          A minimal, secondary selector with flexible state management. By default, it mirrors the main dropdown&apos;s state, but can also maintain independent state or be externally controlled. Perfect for unobtrusive placement in your UI, like the model switcher in Cursor.
         </p>
         <Card className="grid md:grid-cols-2 overflow-hidden">
           <DemoUI />

@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { RotateCcw } from 'lucide-react';
 import { AiModel } from '@/types/model';
-import { useModelSelection } from '@/contexts/ModelSelectionContext';
+import { useModelSelection } from './ModelSelectionContext';
 import { Command, CommandInput } from '@/components/ui/command';
 import { useModelSortAndFilter } from '@/hooks/useModelSortAndFilter';
 import { useScrollToProvider } from '@/hooks/useScrollToProvider';

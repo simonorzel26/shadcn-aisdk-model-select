@@ -60,7 +60,7 @@
           "type": "registry:component"
         },
         {
-          "path": "src/contexts/ModelSelectionContext.tsx",
+          "path": "src/components/shadcn-aisdk-model-select/ModelSelectionContext.tsx",
           "type": "registry:component"
         },
         {

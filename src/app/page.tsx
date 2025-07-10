@@ -4,6 +4,7 @@ import { GettingStarted } from "@/components/docs/GettingStarted";
 import { Header } from "@/components/docs/Header";
 import { HowItWorks } from "@/components/docs/HowItWorks";
 import { LiveDemo } from "@/components/docs/LiveDemo";
+import { TinyModelSelectorModes } from "@/components/docs/TinyModelSelectorModes";
 
 export default function Page() {
   return (
@@ -14,6 +15,7 @@ export default function Page() {
         <GettingStarted />
         <HowItWorks />
         <ComponentShowcase />
+        <TinyModelSelectorModes />
         <AccessingState />
       </div>
     </main>
