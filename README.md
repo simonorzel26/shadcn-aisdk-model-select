@@ -2,10 +2,18 @@
 
 A modern, professional AI model selector built with Next.js, TypeScript, and Tailwind CSS. This project provides a clean, isolated dropdown component for selecting AI models from various providers.
 
+## Installation
+
+To add the component to your project, run the following command:
+
+```bash
+npx shadcn@latest add https://shadcn-aisdk-model-select.vercel.app/r/shadcn-aisdk-model-select.json
+```
+
 ## Preview
 
-![AI Model Selector Preview 1](https://shadcn-aisdk-model-select.vercel.app/img1.png)
-![AI Model Selector Preview 2](https://shadcn-aisdk-model-select.vercel.app/img2.png)
+<img src="https://shadcn-aisdk-model-select.vercel.app/img2.png" alt="AI Model Selector Preview 2" width="50%">
+<img src="https://shadcn-aisdk-model-select.vercel.app/img1.png" alt="AI Model Selector Preview 1" width="50%">
 
 ## Main Concept
 
@@ -31,14 +39,6 @@ The **ModelSelectDropdown** component is the core of this project - an isolated,
 - **⚡ SOLID Principles**: Clean, maintainable, and extensible architecture.
 - **🧩 Shadcn/UI**: Built with the latest shadcn/ui components for a professional look.
 - **🎯 Type Safety**: Full TypeScript support with proper type definitions.
-
-## Installation
-
-To add the component to your project, run the following command:
-
-```bash
-npx shadcn-cli@latest add https://shadcn-aisdk-model-select.vercel.app/r/shadcn-aisdk-model-select.json
-```
 
 ## Usage
 
