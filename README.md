@@ -2,6 +2,11 @@
 
 A modern, professional AI model selector built with Next.js, TypeScript, and Tailwind CSS. This project provides a clean, isolated dropdown component for selecting AI models from various providers.
 
+## Preview
+
+![AI Model Selector Preview 1](https://shadcn-aisdk-model-select.vercel.app/img1.png)
+![AI Model Selector Preview 2](https://shadcn-aisdk-model-select.vercel.app/img2.png)
+
 ## Main Concept
 
 The **ModelSelectDropdown** component is the core of this project - an isolated, self-contained component following **Single Responsibility Principle**:
@@ -19,109 +24,106 @@ The **ModelSelectDropdown** component is the core of this project - an isolated,
 
 ## Features
 
-- **🔒 Isolated Component**: Self-contained with zero external dependencies when `settings={false}`
-- **📦 Single Responsibility**: Just model selection - settings are optional
-- **🎨 Provider Organization**: Models grouped by provider with clean visual hierarchy
-- **⚡ SOLID Principles**: Clean, maintainable, extensible architecture
-- **🔧 Comprehensive Model Support**: Works with `@simonorzel26/ai-models` package
-- **🎯 Type Safety**: Full TypeScript support with proper type definitions
+- **✅ Composable Architecture**: Built with React Context for flexible and decoupled state management.
+- **🔋 Global & Local State**: Use the `TinyModelSelector` in global, local, or controlled mode.
+- **🔧 Extensible**: Add custom logic easily with the `useModelSelection` hook.
+- **🎨 Provider Organization**: Models grouped by provider with a clean visual hierarchy.
+- **⚡ SOLID Principles**: Clean, maintainable, and extensible architecture.
+- **🧩 Shadcn/UI**: Built with the latest shadcn/ui components for a professional look.
+- **🎯 Type Safety**: Full TypeScript support with proper type definitions.
 
 ## Installation
 
 To add the component to your project, run the following command:
 
 ```bash
-npx shadcn-cli@latest add https://shadcn-aisdk-model-select.vercel.app/r/model-select-package.json
+npx shadcn-cli@latest add https://shadcn-aisdk-model-select.vercel.app/r/shadcn-aisdk-model-select.json
 ```
 
-## Usage Examples
+## Usage
 
-### 1. Basic Usage (No Settings)
+The library is built around a single React Context provider, `ModelSelectionProvider`, which manages all shared state.
+
+### 1. Wrap your App
+First, wrap the root of your application (or the relevant part) with the `ModelSelectionProvider`. This provides the context for all child components to access the model selection state.
+
 ```tsx
-import { ModelSelectDropdown } from '@/components/ModelSelectDropdown';
-import { aiModels } from '@/lib/models';
+import { ModelSelectionProvider } from '@/components/shadcn-aisdk-model-select';
+import { getFilteredModels } from '@/lib/models'; // Example model fetching
 
-export default function BasicExample() {
-  const [selected, setSelected] = useState('');
+function App() {
+  const models = getFilteredModels(); // Your list of AI models
+  const initialModel = models[0]?.value;
 
   return (
-    <ModelSelectDropdown
-      models={aiModels}
-      selectedModel={selected}
-      onModelChange={setSelected}
-      placeholder="Choose any model..."
-    />
+    <ModelSelectionProvider
+      configurableModels={models}
+      initialModel={initialModel}
+    >
+      {/* Your application components */}
+    </ModelSelectionProvider>
   );
 }
 ```
 
-### 2. With Settings (API Key Management)
+### 2. Use the Components
+You can now use the `ModelSelectDropdown` and `TinyModelSelector` components anywhere within the provider. They will automatically sync with the shared state.
+
+#### `ModelSelectDropdown`
+The main, feature-rich dropdown component.
 ```tsx
-<ModelSelectDropdown
-  models={aiModels}
-  selectedModel={selected}
-  onModelChange={setSelected}
-  settings={true}
-  placeholder="Select model with settings..."
-/>
+import { ModelSelectDropdown } from '@/components/shadcn-aisdk-model-select';
+
+function MyToolbar() {
+  return <ModelSelectDropdown settings={true} />;
+}
 ```
 
-### 3. OpenAI & Claude Chat Models Only
+#### `TinyModelSelector`
+A minimal, secondary selector perfect for unobtrusive placement.
 ```tsx
-// Filter models before passing
-const openaiClaudeModels = aiModels.filter(model =>
-  (model.value.includes('openai') || model.value.includes('anthropic')) &&
-  model.category === 'chat'
-);
+import { TinyModelSelector } from '@/components/shadcn-aisdk-model-select';
 
-<ModelSelectDropdown
-  models={openaiClaudeModels}
-  selectedModel={selected}
-  onModelChange={setSelected}
-  placeholder="OpenAI or Claude models..."
-/>
+function MyHeader() {
+  return <TinyModelSelector />;
+}
 ```
 
-### 4. Chat Models Only (With Settings)
-```tsx
-<ModelSelectDropdown
-  models={aiModels}
-  selectedModel={selected}
-  onModelChange={setSelected}
-  settings={{
-    enabledCategories: ['chat']
-  }}
-  placeholder="Chat models only..."
-/>
-```
-
-### Configuration
-
-You can configure which providers and categories are enabled by default:
+### 3. Accessing State
+Use the `useModelSelection` hook to access the shared state from any component.
 
 ```tsx
-import { createModelSelectorConfig } from '@/lib/config';
+import { useModelSelection } from '@/components/shadcn-aisdk-model-select';
 
-const config = createModelSelectorConfig({
-  enabledProviders: ['@langdb/vercel-provider', 'sarvam-ai-provider'],
-  enabledCategories: ['chat', 'image']
-});
+function MyComponent() {
+  const { selectedModel, selectedModels, allModels } = useModelSelection();
+
+  return (
+    <div>
+      <p>Current Model: {selectedModel}</p>
+      <p>Visible Models: {selectedModels.length}</p>
+    </div>
+  );
+}
 ```
 
-### Available Model Categories
+## State Management Modes
 
-- **chat**: Conversational AI models
-- **image**: Image generation models
-- **embedding**: Text embedding models
-- **transcription**: Audio transcription models
+The `TinyModelSelector` offers three state management modes for maximum flexibility:
 
-### Provider Management
-
-Users can manage API keys and provider visibility through the settings interface:
-
-- Store API keys securely in localStorage
-- Toggle provider visibility
-- Automatically show/hide providers based on API key availability
+- **Global State (default)**: Connects to the shared `ModelSelectionContext`.
+  ```tsx
+  <TinyModelSelector />
+  ```
+- **Local State**: Manages its own state, independent of the global context.
+  ```tsx
+  <TinyModelSelector useGlobalState={false} />
+  ```
+- **Controlled Mode**: Externally controlled via `value` and `onValueChange` props.
+  ```tsx
+  const [value, setValue] = useState('');
+  <TinyModelSelector value={value} onValueChange={setValue} />
+  ```
 
 ## Development
 
@@ -138,15 +140,15 @@ bun run lint
 
 ## Architecture
 
-### Key Components
+### Key Components & Hooks
 
-- **ModelSelectDropdown**: 🎯 **Main component** - Isolated dropdown with integrated settings button
-- **ModelSelector**: Legacy dropdown component (still available)
-- **ApiKeySettings**: Dialog for managing API keys and provider settings
-- **SimpleGenerator**: Example component showing model usage
-- **useModels**: Hook for filtering and organizing models
-- **useProviderSettings**: Hook for managing provider visibility
-- **useApiKeys**: Hook for API key management
+- **`ModelSelectionProvider`**: The root context provider that manages all state.
+- **`ModelSelectDropdown`**: The main dropdown component with settings.
+- **`TinyModelSelector`**: A minimal selector with flexible state management.
+- **`ModelSelectionTab`**: The tab-based UI for filtering models in the settings dialog.
+- **`useModelSelection`**: Hook to access shared state (`selectedModel`, `selectedModels`, etc.).
+- **`useApiKeys`**: Hook for managing API keys in `localStorage`.
+- **`useModelSortAndFilter`**: Hook for client-side filtering and sorting of models.
 
 ### Type System
 
@@ -154,13 +156,18 @@ bun run lint
 interface AiModel {
   provider: string;
   model: string;
-  category: 'chat' | 'image' | 'embedding' | 'transcription';
-  value: string;
+  category: string;
+  value: string; // A unique identifier, e.g., 'openai/gpt-4'
 }
 
-interface ModelSelectorConfig {
-  enabledProviders?: string[];
-  enabledCategories?: ('chat' | 'image' | 'embedding' | 'transcription')[];
+interface ModelSelectionContextType {
+  state: { selectedModelIds: Set<string>; isLoaded: boolean; };
+  selectedModels: AiModel[];
+  configurableModels: AiModel[];
+  allModels: AiModel[];
+  selectedModel: string;
+  setSelectedModel: (modelId: string) => void;
+  // ... and more
 }
 ```
 
