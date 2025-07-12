@@ -2,8 +2,7 @@ export type AiModel = {
   value: string;
   provider: string;
   model: string;
-  label: string;
-  category: 'chat' | 'text' | 'embedding' | 'image' | 'moderation' | 'rerank' | 'transcription';
+  category: 'chat' | 'embedding' | 'transcription' | 'image' | 'completion' | 'speech';
   context_window?: number;
 };
 
@@ -14,7 +13,7 @@ export interface ModelGroup {
 
 export interface ModelSelectDropdownSettings {
   enabledProviders?: string[];
-  enabledCategories?: ('chat' | 'image' | 'embedding' | 'transcription' | 'speech' | 'completion' | 'responses')[];
+  enabledCategories?: ('chat' | 'embedding' | 'transcription' | 'image' | 'completion' | 'speech')[];
   showApiKeys?: boolean;
 }
 

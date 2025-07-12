@@ -17,7 +17,7 @@ function DemoUI({ models }: { models: AiModel[] }) {
       </p>
       <ul className="text-xs text-muted-foreground mt-2 space-y-1 max-h-48 overflow-y-auto">
         {models.map(m => (
-          <li key={m.value}>{m.label}</li>
+          <li key={m.value}>{m.model}</li>
         ))}
       </ul>
     </CardContent>

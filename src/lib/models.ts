@@ -1,28 +1,7 @@
 import { AiModel } from '@/types/model';
-import { AI_SDK_MODELS } from '@simonorzel26/ai-models';
+import { ALL_MODELS, getProviders, getModelsByProviders, getModelsByCategories } from '@simonorzel26/ai-models';
 
-type ModelGroup = { [key: string]: readonly string[] };
-type Categories = { [key: string]: ModelGroup };
-
-const allModels: AiModel[] = Object.entries(AI_SDK_MODELS).flatMap(
-  ([provider, categories]: [string, Categories]) =>
-    Object.entries(categories).flatMap(
-      ([category, modelsGroup]: [string, ModelGroup]) =>
-        Object.values(modelsGroup).flatMap((modelIds: readonly string[]) =>
-          modelIds.map(
-            (modelId): AiModel => ({
-              value: `${provider}:${modelId}`,
-              provider,
-              model: modelId,
-              label: modelId,
-              category: category as AiModel['category'],
-            }),
-          ),
-        ),
-    ),
-);
-
-export const aiModels: AiModel[] = allModels;
+export const aiModels: AiModel[] = [...ALL_MODELS];
 
 export function getFilteredModels({
   providers,
@@ -31,17 +10,23 @@ export function getFilteredModels({
   providers?: string[];
   categories?: AiModel['category'][];
 }): AiModel[] {
-  let models: AiModel[] = allModels;
+  let models: AiModel[] = [...ALL_MODELS];
 
   if (providers && providers.length > 0) {
-    models = models.filter(model => providers.includes(model.provider));
+    models = [...getModelsByProviders(providers)];
   }
 
   if (categories && categories.length > 0) {
-    models = models.filter(model => categories.includes(model.category));
+    if (providers && providers.length > 0) {
+      // If both providers and categories are specified, filter the provider-filtered models by categories
+      models = models.filter(model => categories.includes(model.category));
+    } else {
+      // If only categories are specified, use the direct function
+      models = [...getModelsByCategories(categories)];
+    }
   }
 
   return models;
 }
 
-export const availableProviders = [...new Set(aiModels.map(model => model.provider))];
+export const availableProviders = getProviders();

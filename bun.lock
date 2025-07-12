@@ -29,7 +29,7 @@
         "@radix-ui/react-switch": "^1.2.5",
         "@radix-ui/react-tabs": "^1.1.12",
         "@radix-ui/react-tooltip": "^1.2.7",
-        "@simonorzel26/ai-models": "^1.2.0",
+        "@simonorzel26/ai-models": "^2.0.1",
         "@types/react-syntax-highlighter": "^15.5.13",
         "ai": "^4.3.16",
         "class-variance-authority": "^0.7.1",
@@ -390,7 +390,7 @@
 
     "@sevinf/maybe": ["@sevinf/maybe@0.5.0", "", {}, "sha512-ARhyoYDnY1LES3vYI0fiG6e9esWfTNcXcO6+MPJJXcnyMV3bim4lnFt45VXouV7y82F4x3YH8nOQ6VztuvUiWg=="],
 
-    "@simonorzel26/ai-models": ["@simonorzel26/ai-models@1.2.0", "", { "peerDependencies": { "@ai-sdk/amazon-bedrock": "*", "@ai-sdk/anthropic": "*", "@ai-sdk/assemblyai": "*", "@ai-sdk/azure": "*", "@ai-sdk/cerebras": "*", "@ai-sdk/cohere": "*", "@ai-sdk/deepgram": "*", "@ai-sdk/deepinfra": "*", "@ai-sdk/deepseek": "*", "@ai-sdk/elevenlabs": "*", "@ai-sdk/fireworks": "*", "@ai-sdk/gladia": "*", "@ai-sdk/google": "*", "@ai-sdk/google-vertex": "*", "@ai-sdk/groq": "*", "@ai-sdk/hume": "*", "@ai-sdk/lmnt": "*", "@ai-sdk/mistral": "*", "@ai-sdk/openai": "*", "@ai-sdk/perplexity": "*", "@ai-sdk/revai": "*", "@ai-sdk/togetherai": "*", "@ai-sdk/xai": "*", "@crosshatch/ai-provider": "*", "@friendliai/ai-provider": "*", "@langdb/vercel-provider": "*", "@letta-ai/vercel-ai-sdk-provider": "*", "@mem0/vercel-ai-provider": "*", "@openrouter/ai-sdk-provider": "*", "@portkey-ai/vercel-provider": "*", "@requesty/ai-sdk": "*", "anthropic-vertex-ai": "*", "chrome-ai": "*", "dify-ai-provider": "*", "mixedbread-ai-provider": "*", "ollama-ai-provider": "*", "sarvam-ai-provider": "*", "spark-ai-provider": "*", "voyage-ai-provider": "*", "workers-ai-provider": "*" } }, "sha512-Ao1a1yUzpkYsZs8iGIfbFlHOjLpziy5edIneRD7T8X/KZmsgH9Ek4iJAtwkJohiBF84P2Hl5ICPIleyu40eZAA=="],
+    "@simonorzel26/ai-models": ["@simonorzel26/ai-models@2.0.1", "", { "peerDependencies": { "@ai-sdk/amazon-bedrock": "*", "@ai-sdk/anthropic": "*", "@ai-sdk/assemblyai": "*", "@ai-sdk/azure": "*", "@ai-sdk/cerebras": "*", "@ai-sdk/cohere": "*", "@ai-sdk/deepgram": "*", "@ai-sdk/deepinfra": "*", "@ai-sdk/deepseek": "*", "@ai-sdk/elevenlabs": "*", "@ai-sdk/fireworks": "*", "@ai-sdk/gladia": "*", "@ai-sdk/google": "*", "@ai-sdk/google-vertex": "*", "@ai-sdk/groq": "*", "@ai-sdk/hume": "*", "@ai-sdk/lmnt": "*", "@ai-sdk/mistral": "*", "@ai-sdk/openai": "*", "@ai-sdk/perplexity": "*", "@ai-sdk/revai": "*", "@ai-sdk/togetherai": "*", "@ai-sdk/xai": "*", "@crosshatch/ai-provider": "*", "@friendliai/ai-provider": "*", "@langdb/vercel-provider": "*", "@letta-ai/vercel-ai-sdk-provider": "*", "@mem0/vercel-ai-provider": "*", "@openrouter/ai-sdk-provider": "*", "@portkey-ai/vercel-provider": "*", "@requesty/ai-sdk": "*", "anthropic-vertex-ai": "*", "chrome-ai": "*", "dify-ai-provider": "*", "mixedbread-ai-provider": "*", "ollama-ai-provider": "*", "sarvam-ai-provider": "*", "spark-ai-provider": "*", "voyage-ai-provider": "*", "workers-ai-provider": "*" } }, "sha512-gqrjFbGjwISH3yvSNu4D91wzIAbzLsNXK51ZcRVJlBUr78XbqLTYcXDA6a/THCmjXb0ZEAoS7lCZ+AWkLQqoFw=="],
 
     "@sinclair/typebox": ["@sinclair/typebox@0.27.8", "", {}, "sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA=="],
 
