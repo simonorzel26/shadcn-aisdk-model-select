@@ -83,7 +83,7 @@
     },
     {
       "path": "src/types/model.ts",
-      "content": "export type AiModel = {\n  value: string;\n  provider: string;\n  model: string;\n  label: string;\n  category: 'chat' | 'text' | 'embedding' | 'image' | 'moderation' | 'rerank' | 'transcription';\n  context_window?: number;\n};\n\nexport interface ModelGroup {\n  provider: string;\n  models: AiModel[];\n}\n\nexport interface ModelSelectDropdownSettings {\n  enabledProviders?: string[];\n  enabledCategories?: ('chat' | 'image' | 'embedding' | 'transcription' | 'speech' | 'completion' | 'responses')[];\n  showApiKeys?: boolean;\n}\n\nexport interface ModelSelectorConfig {\n  enabledProviders?: string[];\n  enabledCategories?: AiModel['category'][];\n}\n\nexport interface ProviderApiKeys {\n  [provider: string]: string;\n}\n\nexport interface ProviderVisibilitySettings {\n  [provider: string]: boolean;\n}",
+      "content": "export type AiModel = {\n  value: string;\n  provider: string;\n  model: string;\n  category: 'chat' | 'embedding' | 'transcription' | 'image' | 'completion' | 'speech';\n  context_window?: number;\n};\n\nexport interface ModelGroup {\n  provider: string;\n  models: AiModel[];\n}\n\nexport interface ModelSelectDropdownSettings {\n  enabledProviders?: string[];\n  enabledCategories?: ('chat' | 'embedding' | 'transcription' | 'image' | 'completion' | 'speech')[];\n  showApiKeys?: boolean;\n}\n\nexport interface ModelSelectorConfig {\n  enabledProviders?: string[];\n  enabledCategories?: AiModel['category'][];\n}\n\nexport interface ProviderApiKeys {\n  [provider: string]: string;\n}\n\nexport interface ProviderVisibilitySettings {\n  [provider: string]: boolean;\n}",
       "type": "registry:lib"
     }
   ]
